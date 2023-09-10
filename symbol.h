@@ -12,7 +12,7 @@ struct entry{
 	struct entry* successor;
 };
 
-typedef struct entry,entry_make
+typedef struct entry entry_make;
 
 entry_make** create_table(){
 	entry_make** hash_ptr=NULL;
@@ -45,8 +45,8 @@ entry_make *create(char * lexeme, int token_val){
 	if((newentry=malloc(sizeof(entry_make)))==NULL){return NULL;}
 	if((newentry->lexeme=strdup(lexeme))==NULL){return NULL;}
 	newentry->token_val=token_val;
-	new_entry->successor=NULL;
-	return new_entry;
+	newentry->successor=NULL;
+	return newentry;
 
 }
 
@@ -60,7 +60,7 @@ entry_make* search(entry_make** hash_ptr, char* lexeme){
 	
 	search_entry=hash_ptr[idx];
 	
-	while(search_entry!=NULL && strcmp(lexeme, find->lexeme)!=0){find=find->successor;}
+	while(search_entry!=NULL && strcmp(lexeme, search_entry->lexeme)!=0){search_entry=search_entry->successor;}
 	if(search_entry==NULL)return NULL;//Not found
 	else{return search_entry;}
 
@@ -68,40 +68,48 @@ entry_make* search(entry_make** hash_ptr, char* lexeme){
 
 //Insert into table
 
-void insert(entry_make** hash_ptr,char* lexeme, int token_val){
-	if(search(hash_ptr,lexeme)!=NULL)return;
-	uint32_t idx;
-	entry_make* newentry=NULL;
-	entry_make* head=NULL;
-	
-	idx=hash(lexeme);
-	newentry=create_entry(lexeme,token_val);
-	if(newentry==NULL){printf("Insert failed");exit(1);}
+void insert( entry_make** hash_ptr, char* lexeme, int token_val )
+{
+	if(search( hash_ptr, lexeme )!= NULL)
+	    return;
 
-	head=hash_ptr[idx];
-	
-	if(head==NULL){hash_ptr[idx]=newentry;}
-	else{
+	uint32_t idx;
+	entry_make* newentry = NULL;
+	entry_make* head = NULL;
+
+	idx = hash( lexeme ); 
+	newentry = create(lexeme, token_val); 
+
+	if(newentry == NULL)
+	{
+		printf("Insert failed. New entry could not be created.");
+		exit(1);
+	}
+
+	head = hash_ptr[idx];
+
+	if(head == NULL) 
+	{
+		hash_ptr[idx] = newentry;
+	}
+	else 
+	{
 		newentry->successor = hash_ptr[idx];
 		hash_ptr[idx] = newentry;
 	}
-
-
 }
-
-//print symbol table
 
 void print_table(entry_make** hash_ptr){
 	
-	entry_make** iter;
+	entry_make* iter;
 	printf("\n===================================\n");
 	printf("\t< token | lexeme >\n");
 	printf("\n===================================\n");
-	for(int =0;i<TABLE_SIZE;i++){
+	for(int i=0;i<TABLE_SIZE;i++){
 		iter=hash_ptr[i];
 		while(iter!=NULL){
 			printf("< %d | %s >\n",iter->token_val,iter->lexeme);
-			iter=iter->succesor;
+			iter=iter->successor;
 		}
 	}
 	printf("===================================\n");
