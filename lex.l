@@ -1,39 +1,32 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-int lineno=1;
-void return_print(char *token_type);
-void yyerror();
+#include "symbol.h"
+#include "tokens.h"
 
+entry_make** symbol_table;
+entry_make** constant_table;
+int comment=0;
 %}
-%x L_COMMENT
+
 alpha [a-zA-Z]
 digit [0-9]
-alphanum {alpha}|{digit}
-print [ -~]
-ID {alpha}+{alnum}*
-INT_CONST "0"|[0-9]{digit}*
-FLOAT_CONST "0"|{digit}*"."{digit}+
+identifier (_|{alpha})({alpha}|{digit}|_){0,32}
+hex [0-9a-f]
+
+%x COMM
+%x PREPROCESSOR
+
 %%
-
-"//".* {printf("Comment at line %d",lineno);}
-
-"/*" {printf("Comment at line %d",BEGIN(L_COMMENT));}
-<L_COMMENT>"*/" {printf(" to line %d",BEGIN(INITIAL));}
-<L_COMMENT>"\n" {lineno+=1;}
-
-"char" {return_print("CHAR");}
-"int" {return_print("INT");}
-"float" {return_print("FLOAT");}
-"double" {return_print("DOUBLE");}
-void yyerror(char *message){
-	printf("Error in "%s" in line %d. Token = %s",message,lineno,yytext);
-}
+"int" {printf("\t%s : %d
+%%
 int main(){
+	yyin=fopen("test input/","r");
+	symbol_table=create_table();
+	constant_table=create_table();
 	yylex();
-}
-
-int yywrap(){
-	return 1;
+	printf("\n\tSymbol Table:");
+	print_table(symbol_table);
+	printf("\n\tConstant Table:");
+	print_table(constant_table);
 }
