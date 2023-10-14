@@ -20,23 +20,23 @@ sp [ \t\r\f\v]
 %x PREPROC
 
 %%
-"int" {printf("\t%s : %d\n",yytext,INT);}
-"long" {printf("\t%s : %d\n",yytext,LONG);}
-"long long" {printf("\t%s : %d\n",yytext,LONG_LONG);}
-"short" {printf("\t%s : %d\n",yytext,SHORT);}
-"signed" {printf("\t%s : %d\n",yytext,SIGNED);}
-"unsigned" {printf("\t%s : %d\n",yytext,UNSIGNED);}
-"for" {printf("\t%s : %d\n",yytext,FOR);}
-"break" {printf("\t%s : %d\n",yytext,BREAK);}
-"continue" {printf("\t%s : %d\n",yytext,CONTINUE);}
-"return" {printf("\t%s : %d\n",yytext,RETURN);}
-"float" {printf("\t%s : %d\n",yytext,FLOAT);}
-"double" {printf("\t%s : %d\n",yytext,DOUBLE);}
-"char" {printf("\t%s : %d\n",yytext,CHAR);}
-"if" {printf("\t%s : %d\n",yytext,IF);}
-"else" {printf("\t%s : %d\n",yytext,ELSE);}
+"int" {printf("\t%d: %s : %d\n",yylineno,yytext,INT);}
+"long" {printf("\t%d: %s : %d\n",yylineno,yytext,LONG);}
+"long long" {printf("\t%d: %s : %d\n",yylineno,yytext,LONG_LONG);}
+"short" {printf("\t%d: %s : %d\n",yylineno,yytext,SHORT);}
+"signed" {printf("\t%d: %s : %d\n",yylineno,yytext,SIGNED);}
+"unsigned" {printf("\t%d: %s : %d\n",yylineno,yytext,UNSIGNED);}
+"for" {printf("\t%d: %s : %d\n",yylineno,yytext,FOR);}
+"break" {printf("\t%d: %s : %d\n",yylineno,yytext,BREAK);}
+"continue" {printf("\t%d: %s : %d\n",yylineno,yytext,CONTINUE);}
+"return" {printf("\t%d: %s : %d\n",yylineno,yytext,RETURN);}
+"float" {printf("\t%d: %s : %d\n",yylineno,yytext,FLOAT);}
+"double" {printf("\t%d: %s : %d\n",yylineno,yytext,DOUBLE);}
+"char" {printf("\t%d: %s : %d\n",yylineno,yytext,CHAR);}
+"if" {printf("\t%d: %s : %d\n",yylineno,yytext,IF);}
+"else" {printf("\t%d: %s : %d\n",yylineno,yytext,ELSE);}
 
-{identifier} {printf("\t%s : %d\n",yytext,IDENTIFIER);
+{identifier} {printf("\t%d: %s : %d\n",yylineno,yytext,IDENTIFIER);
 	      insert(symbol_table,yytext,IDENTIFIER);}
 {sp} ;
 "/*"		{comment=yylineno;BEGIN COMM;}
@@ -44,7 +44,7 @@ sp [ \t\r\f\v]
 <COMM>"*/"      {BEGIN INITIAL;}
 <COMM>"/*"	{printf("Line %d: Nested Comments not valid!\n",yylineno);}
 ^"#include"	{BEGIN PREPROC;}
-<PREPROC>"<"[^<>\n]+">"            {printf("\t%s : %d\n",yytext,HEADER_FILE);}
+<PREPROC>"<"[^<>\n]+">"            {printf("\t%d: %s : %d\n",yylineno,yytext,HEADER_FILE);}
 <PREPROC>{sp}                       ;
 <PREPROC>\"[^"\n]+\"              {printf("\t%-30s : %3d\n",yytext,HEADER_FILE);}
 <PREPROC>\n                       {yylineno++; BEGIN INITIAL;}
@@ -62,31 +62,31 @@ sp [ \t\r\f\v]
  }
 \"[^\"\n]*$                     {printf("Line %3d: Unterminated string %s\n",yylineno,yytext);}
 \n                              {yylineno++;}
-"--"			                {printf("\t%s : %d\n",yytext,DECREMENT);}
-"++"			                {printf("\t%s : %d\n",yytext,INCREMENT);}
-"->"			                {printf("\t%s : %d\n",yytext,PTR_SELECT);}
-"&&"			                {printf("\t%s : %d\n",yytext,LOGICAL_AND);}
-"||"			                {printf("\t%s : %d\n",yytext,LOGICAL_OR);}
-"<"			                    {printf("\t%s : %d\n",yytext,LS_THAN);}
-">"			                    {printf("\t%s : %d\n",yytext,GR_THAN);}
-"<="			                {printf("\t%s : %d\n",yytext,LS_THAN_EQ);}
-">="			                {printf("\t%s : %d\n",yytext,GR_THAN_EQ);}
-"=="			                {printf("\t%s : %d\n",yytext,EQ);}
-"!="		                    {printf("\t%s : %d\n",yytext,NOT_EQ);}
-";"			                    {printf("\t%s : %d\n",yytext,SEMICOLON);}
-"{"                             {printf("\t%s : %d\n",yytext,OPEN_FLOWER);}
-"}"                             {printf("\t%s : %d\n",yytext,CLOSE_FLOWER);}
-","			                    {printf("\t%s : %d\n",yytext,COMMA);}
-"="			                    {printf("\t%s : %d\n",yytext,ASSIGN);}
-"("			                    {printf("\t%s : %d\n",yytext,OPEN_CURLY);}
-")"			                    {printf("\t%s : %d\n",yytext,CLOSE_CURLY);}
-"["                             {printf("\t%s : %d\n",yytext,OPEN_SQUARE);}
-"]"                             {printf("\t%s : %d\n",yytext,CLOSE_SQUARE);}
-"-"			                    {printf("\t%s : %d\n",yytext,MINUS);}
-"+"			                    {printf("\t%s : %d\n",yytext,PLUS);}
-"*"			                    {printf("\t%s : %d\n",yytext,ASTERISK);}
-"/"		                        {printf("\t%s : %d\n",yytext,FW_SLASH);}
-"%"			                    {printf("\t%s : %d\n",yytext,MODULO);}
+"--"			                {printf("\t%d: %s : %d\n",yylineno,yytext,DECREMENT);}
+"++"			                {printf("\t%d: %s : %d\n",yylineno,yytext,INCREMENT);}
+"->"			                {printf("\t%d: %s : %d\n",yylineno,yytext,PTR_SELECT);}
+"&&"			                {printf("\t%d: %s : %d\n",yylineno,yytext,LOGICAL_AND);}
+"||"			                {printf("\t%d: %s : %d\n",yylineno,yytext,LOGICAL_OR);}
+"<"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,LS_THAN);}
+">"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,GR_THAN);}
+"<="			                {printf("\t%d: %s : %d\n",yylineno,yytext,LS_THAN_EQ);}
+">="			                {printf("\t%d: %s : %d\n",yylineno,yytext,GR_THAN_EQ);}
+"=="			                {printf("\t%d: %s : %d\n",yylineno,yytext,EQ);}
+"!="		                    {printf("\t%d: %s : %d\n",yylineno,yytext,NOT_EQ);}
+";"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,SEMICOLON);}
+"{"                             {printf("\t%d: %s : %d\n",yylineno,yytext,OPEN_FLOWER);}
+"}"                             {printf("\t%d: %s : %d\n",yylineno,yytext,CLOSE_FLOWER);}
+","			                    {printf("\t%d: %s : %d\n",yylineno,yytext,COMMA);}
+"="			                    {printf("\t%d: %s : %d\n",yylineno,yytext,ASSIGN);}
+"("			                    {printf("\t%d: %s : %d\n",yylineno,yytext,OPEN_CURLY);}
+")"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,CLOSE_CURLY);}
+"["                             {printf("\t%d: %s : %d\n",yylineno,yytext,OPEN_SQUARE);}
+"]"                             {printf("\t%d: %s : %d\n",yylineno,yytext,CLOSE_SQUARE);}
+"-"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,MINUS);}
+"+"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,PLUS);}
+"*"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,ASTERISK);}
+"/"		                        {printf("\t%d: %s : %d\n",yylineno,yytext,FW_SLASH);}
+"%"			                    {printf("\t%d: %s : %d\n",yylineno,yytext,MODULO);}
 
 .                               {printf("Line %3d: Illegal character %s\n",yylineno,yytext);}
 %%

@@ -49,6 +49,8 @@ enum special_symbols{
 enum constants{
 	HEADER_FILE=400,
 	STRING,
+	DEC_CONSTANT,
+	HEX_CONSTANT
 };
 
 enum IDENTIFIER{IDENTIFIER=500};
