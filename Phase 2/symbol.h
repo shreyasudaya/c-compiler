@@ -9,8 +9,7 @@
 struct entry{
 	char* lexeme;
 	int token_val;
-	int data_type;
-	
+	double data_type;
 	struct entry* successor;
 };
 
@@ -70,7 +69,7 @@ entry_make* search(entry_make** hash_ptr, char* lexeme){
 
 //Insert into table
 
-void insert( entry_make** hash_ptr, char* lexeme, int token_val )
+entry_make* insert( entry_make** hash_ptr, char* lexeme, int token_val )
 {
 	if(search( hash_ptr, lexeme )!= NULL)
 	    return;
