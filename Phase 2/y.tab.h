@@ -54,42 +54,54 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    IDENTIFIER = 258,              /* IDENTIFIER  */
-    DEC_CONSTANT = 259,            /* DEC_CONSTANT  */
-    HEX_CONSTANT = 260,            /* HEX_CONSTANT  */
-    STRING = 261,                  /* STRING  */
-    SHORT = 262,                   /* SHORT  */
-    INT = 263,                     /* INT  */
-    LONG = 264,                    /* LONG  */
-    LONG_LONG = 265,               /* LONG_LONG  */
-    FLOAT = 266,                   /* FLOAT  */
-    DOUBLE = 267,                  /* DOUBLE  */
-    CHAR = 268,                    /* CHAR  */
-    SIGNED = 269,                  /* SIGNED  */
-    UNSIGNED = 270,                /* UNSIGNED  */
-    CONST = 271,                   /* CONST  */
-    IF = 272,                      /* IF  */
-    FOR = 273,                     /* FOR  */
-    WHILE = 274,                   /* WHILE  */
-    CONTINUE = 275,                /* CONTINUE  */
+    IF = 258,                      /* IF  */
+    INT = 259,                     /* INT  */
+    CHAR = 260,                    /* CHAR  */
+    FLOAT = 261,                   /* FLOAT  */
+    DOUBLE = 262,                  /* DOUBLE  */
+    LONG = 263,                    /* LONG  */
+    SHORT = 264,                   /* SHORT  */
+    SIGNED = 265,                  /* SIGNED  */
+    UNSIGNED = 266,                /* UNSIGNED  */
+    STRUCT = 267,                  /* STRUCT  */
+    PREPROC = 268,                 /* PREPROC  */
+    ALPHA = 269,                   /* ALPHA  */
+    RETURN = 270,                  /* RETURN  */
+    MAIN = 271,                    /* MAIN  */
+    VOID = 272,                    /* VOID  */
+    WHILE = 273,                   /* WHILE  */
+    FOR = 274,                     /* FOR  */
+    DO = 275,                      /* DO  */
     BREAK = 276,                   /* BREAK  */
-    RETURN = 277,                  /* RETURN  */
-    LOGICAL_AND = 278,             /* LOGICAL_AND  */
-    LOGICAL_OR = 279,              /* LOGICAL_OR  */
-    LESS_THAN_EQ = 280,            /* LESS_THAN_EQ  */
-    GR_THAN_EQ = 281,              /* GR_THAN_EQ  */
-    EQ = 282,                      /* EQ  */
-    NOT_EQ = 283,                  /* NOT_EQ  */
-    INCREMENT = 284,               /* INCREMENT  */
-    DECREMENT = 285,               /* DECREMENT  */
-    MUL_ASSIGN = 286,              /* MUL_ASSIGN  */
-    DIV_ASSIGN = 287,              /* DIV_ASSIGN  */
-    MOD_ASSIGN = 288,              /* MOD_ASSIGN  */
-    PLUS_ASSIGN = 289,             /* PLUS_ASSIGN  */
-    MINUS_ASSIGN = 290,            /* MINUS_ASSIGN  */
-    UMINUS = 291,                  /* UMINUS  */
-    LOWER_THAN_ELSE = 292,         /* LOWER_THAN_ELSE  */
-    ELSE = 293                     /* ELSE  */
+    ENDIF = 277,                   /* ENDIF  */
+    IDENTIFIER = 278,              /* IDENTIFIER  */
+    INT_CONSTANT = 279,            /* INT_CONSTANT  */
+    STRING_CONSTANT = 280,         /* STRING_CONSTANT  */
+    FLOAT_CONSTANT = 281,          /* FLOAT_CONSTANT  */
+    CHAR_CONSTANT = 282,           /* CHAR_CONSTANT  */
+    ELSE = 283,                    /* ELSE  */
+    LSHIFT_ASSIGN = 284,           /* LSHIFT_ASSIGN  */
+    RSHIFT_ASSIGN = 285,           /* RSHIFT_ASSIGN  */
+    XOR_ASSIGN = 286,              /* XOR_ASSIGN  */
+    OR_ASSIGN = 287,               /* OR_ASSIGN  */
+    AND_ASSIGN = 288,              /* AND_ASSIGN  */
+    MOD_ASSIGN = 289,              /* MOD_ASSIGN  */
+    MUL_ASSIGN = 290,              /* MUL_ASSIGN  */
+    DIV_ASSIGN = 291,              /* DIV_ASSIGN  */
+    PLUS_ASSIGN = 292,             /* PLUS_ASSIGN  */
+    MINUS_ASSIGN = 293,            /* MINUS_ASSIGN  */
+    assignment_op = 294,           /* assignment_op  */
+    OR = 295,                      /* OR  */
+    AND = 296,                     /* AND  */
+    EQ = 297,                      /* EQ  */
+    NOT_EQ = 298,                  /* NOT_EQ  */
+    LESS_THAN_EQ = 299,            /* LESS_THAN_EQ  */
+    GR_THAN_EQ = 300,              /* GR_THAN_EQ  */
+    LSHIFT = 301,                  /* LSHIFT  */
+    RSHIFT = 302,                  /* RSHIFT  */
+    SIZEOF = 303,                  /* SIZEOF  */
+    INCREMENT = 304,               /* INCREMENT  */
+    DECREMENT = 305                /* DECREMENT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -98,57 +110,58 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define IDENTIFIER 258
-#define DEC_CONSTANT 259
-#define HEX_CONSTANT 260
-#define STRING 261
-#define SHORT 262
-#define INT 263
-#define LONG 264
-#define LONG_LONG 265
-#define FLOAT 266
-#define DOUBLE 267
-#define CHAR 268
-#define SIGNED 269
-#define UNSIGNED 270
-#define CONST 271
-#define IF 272
-#define FOR 273
-#define WHILE 274
-#define CONTINUE 275
+#define IF 258
+#define INT 259
+#define CHAR 260
+#define FLOAT 261
+#define DOUBLE 262
+#define LONG 263
+#define SHORT 264
+#define SIGNED 265
+#define UNSIGNED 266
+#define STRUCT 267
+#define PREPROC 268
+#define ALPHA 269
+#define RETURN 270
+#define MAIN 271
+#define VOID 272
+#define WHILE 273
+#define FOR 274
+#define DO 275
 #define BREAK 276
-#define RETURN 277
-#define LOGICAL_AND 278
-#define LOGICAL_OR 279
-#define LESS_THAN_EQ 280
-#define GR_THAN_EQ 281
-#define EQ 282
-#define NOT_EQ 283
-#define INCREMENT 284
-#define DECREMENT 285
-#define MUL_ASSIGN 286
-#define DIV_ASSIGN 287
-#define MOD_ASSIGN 288
-#define PLUS_ASSIGN 289
-#define MINUS_ASSIGN 290
-#define UMINUS 291
-#define LOWER_THAN_ELSE 292
-#define ELSE 293
+#define ENDIF 277
+#define IDENTIFIER 278
+#define INT_CONSTANT 279
+#define STRING_CONSTANT 280
+#define FLOAT_CONSTANT 281
+#define CHAR_CONSTANT 282
+#define ELSE 283
+#define LSHIFT_ASSIGN 284
+#define RSHIFT_ASSIGN 285
+#define XOR_ASSIGN 286
+#define OR_ASSIGN 287
+#define AND_ASSIGN 288
+#define MOD_ASSIGN 289
+#define MUL_ASSIGN 290
+#define DIV_ASSIGN 291
+#define PLUS_ASSIGN 292
+#define MINUS_ASSIGN 293
+#define assignment_op 294
+#define OR 295
+#define AND 296
+#define EQ 297
+#define NOT_EQ 298
+#define LESS_THAN_EQ 299
+#define GR_THAN_EQ 300
+#define LSHIFT 301
+#define RSHIFT 302
+#define SIZEOF 303
+#define INCREMENT 304
+#define DECREMENT 305
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 23 "parse.y"
-
-	double dval;
-	entry_make* entry;
-	int ival;
-
-#line 149 "y.tab.h"
-
-};
-typedef union YYSTYPE YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

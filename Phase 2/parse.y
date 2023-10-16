@@ -1,271 +1,346 @@
 %{
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include <stdint.h>
-	#include <limits.h>
-	#include <ctype.h>
-	int yylex(void);
-	
-	entry_make** symbol_table;
-    entry_make** constant_table;
-	double Evaluate (double lhs_value,int assign_type,double rhs_value);
-	int current_dtype;
-	extern char *yytext;
-	int yyerror(char *msg);
-	int yylineno;
-	
+	void yyerror(char* s);
+	int yylex();
+	#include "stdio.h"
+	#include "stdlib.h"
+	#include "ctype.h"
+	#include "string.h"
+	void ins();
+	void insV();
+	int flag=0;
+
+	extern char current_id[20];
+	extern char current_type[20];
+	extern char current_val[20];
+
 %}
 
-%union
-{
-	double dval;
-	entry_make* entry;
-	int ival;
-}
+%nonassoc IF
+%token INT CHAR FLOAT DOUBLE LONG SHORT SIGNED UNSIGNED STRUCT PREPROC ALPHA
+%token RETURN MAIN
+%token VOID
+%token WHILE FOR DO 
+%token BREAK
+%token ENDIF
 
+%token IDENTIFIER
+%token INT_CONSTANT STRING_CONSTANT FLOAT_CONSTANT CHAR_CONSTANT
 
-%token <entry> IDENTIFIER
-
-%token <dval> DEC_CONSTANT HEX_CONSTANT
-%token STRING
-
-%token SHORT INT LONG LONG_LONG FLOAT DOUBLE CHAR SIGNED UNSIGNED CONST 
-%token IF FOR WHILE CONTINUE BREAK RETURN
-%token LOGICAL_AND LOGICAL_OR LESS_THAN_EQ GR_THAN_EQ EQ NOT_EQ INCREMENT DECREMENT 
-
-%token MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN PLUS_ASSIGN MINUS_ASSIGN
-
-
-%type <dval> expression
-%type <dval> sub_expr
-%type <dval> constant
-%type <dval> unary_expr
-%type <dval> arithmetic_expr
-%type <dval> assignment_expr
-%type <entry> lhs
-%type <ival> assign_op
-
-%start start
-
-%left ','
-%right '='
-%left LOGICAL_OR
-%left LOGICAL_AND
-%left EQ NOT_EQ
-%left '<' '>' LESS_THAN_EQ GR_THAN_EQ
-%left '+' '-'
-%left '*' '/' '%'
-%right '!'
-
-
-%nonassoc UMINUS
-%nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
+%right LSHIFT_ASSIGN RSHIFT_ASSIGN
+%right XOR_ASSIGN OR_ASSIGN
+%right AND_ASSIGN MOD_ASSIGN
+%right MUL_ASSIGN DIV_ASSIGN
+%right PLUS_ASSIGN MINUS_ASSIGN
+%right assignment_op
+
+%left OR
+%left AND
+%left '|'
+%left '&'
+%left '^'
+%left EQ NOT_EQ
+%left LESS_THAN_EQ '<' GR_THAN_EQ '>'
+%left LSHIFT RSHIFT 
+%left '+' '-'
+%left '*' '/' '%'
+
+%right SIZEOF
+%right '~' '!'
+%left INCREMENT DECREMENT 
+
+
+%start program
 
 %%
-//C program has many build blocks
-start: start build
-	|build
+program
+			: declaration_list
+			| PREPROC '<' ALPHA '.' 'h' '>' program
 ;
 
-//build can be func or declaration
-build: function
-	 |declaration
-;
-//function
-function: type IDENTIFIER '(' arg_list ')' compound_stmt;
-//data type
-type: data_type pointer
-	|data_type;
 
-pointer: '*' pointer	
-	   |'*'
-;
+declaration_list
+			: declaration D 
 
-data_type: sign_spec type_spec
-		|type_spec
-;
-//all possible combinations
-sign_spec :SIGNED
-	|UNSIGNED
-	;
+D
+			: declaration_list
+			| ;
 
-type_spec:INT {current_dtype=INT;}
-	|SHORT INT {current_dtype=SHORT;}
-	|SHORT     {current_dtype=SHORT;}
-	|LONG	{current_dtype=LONG;}
-	|LONG_LONG {current_dtype=LONG_LONG;}
-	|LONG INT {current_dtype=LONG;}
-	|LONG_LONG INT {current_dtype=LONG_LONG;}
-	|FLOAT	{current_dtype=FLOAT;}
-	|CHAR	{current_dtype=CHAR;}
-	|DOUBLE {current_dtype=DOUBLE;}
-	|LONG FLOAT    {current_dtype=LONG;}
-	|LONG_LONG FLOAT {current_dtype=LONG_LONG;}
-	;
-//arguments
-arg_list: arguments|
-;
-arguments: arguments ',' arg
-		|arg
-		;
-arg: type IDENTIFIER;
+declaration
+			: variable_declaration 
+			| function_declaration
+			| structure_definition;
 
-stmt: compound_stmt
-	|single_stmt
-	;
+variable_declaration
+			: type_specifier variable_declaration_list ';' 
+			| structure_declaration;
 
-compound_stmt:'{'statements'}'
-;
-statements:statements stmt|
-;
-single_stmt: if_block
-	|for_loop
-	|while_loop
-	|declaration
-	|function_call ';'
-		|RETURN ';'
-		|CONTINUE ';'
-		|BREAK ';'
-		|RETURN sub_expr ';'
-	;
+variable_declaration_list
+			: variable_declaration_identifier V;
 
-for_loop:FOR '('expression_stmt expression_stmt ')' stmt
-		|FOR '(' expression_stmt expression_stmt expression ')' stmt
-		;
+V
+			: ',' variable_declaration_list 
+			| ;
 
-if_block:IF '(' expression ')' stmt %prec LOWER_THAN_ELSE
-				|IF '(' expression ')' stmt ELSE stmt
-    ;
+variable_declaration_identifier 
+			: IDENTIFIER { ins(); } vdi;
 
-while_loop:WHILE '(' expression	')' stmt
-		;
+vdi : identifier_array_type | assignment_op expression ; 
 
-declaration: type declaration_list ';'
-			|declaration_list ';'
-			|unary_expr ';'
+identifier_array_type
+			: '[' initilization_params
+			| ;
 
-declaration_list:declaration_list ',' sub_decl
-				|sub_decl;
+initilization_params
+			: INT_CONSTANT ']' initilization
+			| ']' string_initilization;
 
-sub_decl: assignment_expr
-    |IDENTIFIER                     {$1 -> data_type = current_dtype;}
-    |array_index
-    ;
+initilization
+			: string_initilization
+			| array_initialization
+			| ;
 
-expression_stmt:expression ';'
-			|';'
-			;
+type_specifier 
+			: INT | CHAR | FLOAT | DOUBLE 
+			| LONG long_grammar 
+			| SHORT short_grammar
+			| UNSIGNED unsigned_grammar 
+			| SIGNED signed_grammar
+			| VOID ;
 
-expression:
-	 expression ',' sub_expr								{$$ = $1,$3;}
-    |sub_expr		                                    {$$ = $1;}
-		;
+unsigned_grammar 
+			: INT | LONG long_grammar | SHORT short_grammar | ;
 
-sub_expr:sub_expr '>' sub_expr						{$$ = ($1 > $3);}
-    |sub_expr '<' sub_expr						{$$ = ($1 < $3);}
-    |sub_expr EQ sub_expr						{$$ = ($1 == $3);}
-    |sub_expr NOT_EQ sub_expr                   {$$ = ($1 != $3);}
-    |sub_expr LESS_THAN_EQ sub_expr                    {$$ = ($1 <= $3);}
-    |sub_expr GR_THAN_EQ sub_expr                    {$$ = ($1 >= $3);}
-	|sub_expr LOGICAL_AND sub_expr              {$$ = ($1 && $3);}
-	|sub_expr LOGICAL_OR sub_expr               {$$ = ($1 || $3);}
-	|'!' sub_expr                               {$$ = (!$2);}
-	|arithmetic_expr							{$$ = $1;}
-    |assignment_expr                            {$$ = $1;}
-	|unary_expr                                 {$$ = $1;}
-    ;
+signed_grammar 
+			: INT | LONG long_grammar | SHORT short_grammar | ;
+
+long_grammar 
+			: INT | ;
+
+short_grammar 
+			: INT | ;
+
+structure_definition
+			: STRUCT IDENTIFIER { ins(); } '{' V1  '}' ';';
+
+V1 : variable_declaration V1 | ;
+
+structure_declaration 
+			: STRUCT IDENTIFIER variable_declaration_list;
 
 
+function_declaration
+			: function_declaration_type function_declaration_param_statement;
 
-assignment_expr :lhs assign_op arithmetic_expr     {$$ = $1->token_val = Evaluate($1->token_val,$2,$3);}
-    |lhs assign_op array_index                     {$$ = 0;}
-    |lhs assign_op function_call                   {$$ = 0;}
-	|lhs assign_op unary_expr                      {$$ = $1->token_val = Evaluate($1->token_val,$2,$3);}
-	|unary_expr assign_op unary_expr               {$$ = 0;}
-    ;
+function_declaration_type
+			: type_specifier IDENTIFIER '('  { ins();};
 
+function_declaration_param_statement
+			: params ')' statement;
 
-unary_expr:	lhs INCREMENT                          {$$ = $1->token_val = ($1->token_val)++;}
-	|lhs DECREMENT                                 {$$ = $1->token_val = ($1->token_val)--;}
-	|DECREMENT lhs                                 {$$ = $2->token_val = --($2->token_val);}
-	|INCREMENT lhs                                 {$$ = $2->token_val = ++($2->token_val);}
+params 
+			: parameters_list | ;
 
-lhs:IDENTIFIER 
-	;
+parameters_list 
+			: type_specifier parameters_identifier_list;
 
-assign_op:'='                                      {$$ = '=';}
-    |PLUS_ASSIGN                                {$$ = PLUS_ASSIGN;}
-    |MINUS_ASSIGN                                  {$$ = MINUS_ASSIGN;}
-    |MUL_ASSIGN                                    {$$ = MUL_ASSIGN;}
-    |DIV_ASSIGN                                    {$$ = DIV_ASSIGN;}
-    |MOD_ASSIGN                                    {$$ = MOD_ASSIGN;}
-    ;
+parameters_identifier_list 
+			: param_identifier parameters_identifier_list_breakup;
 
-arithmetic_expr: arithmetic_expr '+' arithmetic_expr    {$$ = $1 + $3;}
-    |arithmetic_expr '-' arithmetic_expr                {$$ = $1 - $3;}
-    |arithmetic_expr '*' arithmetic_expr                {$$ = $1 * $3;}
-    |arithmetic_expr '/' arithmetic_expr                {$$ = ($3 == 0) ? yyerror("Divide by 0!") : ($1 / $3);}
-	|arithmetic_expr '%' arithmetic_expr                {$$ = (int)$1 % (int)$3;}
-	|'(' arithmetic_expr ')'                            {$$ = $2;}
-    |'-' arithmetic_expr %prec UMINUS                   {$$ = -$2;}
-    |IDENTIFIER                                         {$$ = $1 -> token_val;}
-    |constant                                           {$$ = $1;}
-    ;
+parameters_identifier_list_breakup
+			: ',' parameters_list 
+			| ;
 
-constant: DEC_CONSTANT                                  {$$ = $1;}
-    |HEX_CONSTANT                                       {$$ = $1;}
-    ;
+param_identifier 
+			: IDENTIFIER { ins(); } param_identifier_breakup;
 
-array_index: IDENTIFIER '[' sub_expr ']'
+param_identifier_breakup
+			: '[' ']'
+			| ;
 
-function_call: IDENTIFIER '(' parameter_list ')'
-             |IDENTIFIER '(' ')'
-             ;
+statement 
+			: expression_statment | compound_statement 
+			| conditional_statements | iterative_statements 
+			| return_statement | break_statement 
+			| variable_declaration;
 
-parameter_list:
-              parameter_list ','  parameter
-              |parameter
-              ;
+compound_statement 
+			: '{' statment_list '}' ;
 
-parameter: sub_expr
-					|STRING
+statment_list 
+			: statement statment_list 
+			| ;
 
-        ;
+expression_statment 
+			: expression ';' 
+			| ';' ;
+
+conditional_statements 
+			: IF '(' simple_expression ')' statement conditional_statements_breakup;
+
+conditional_statements_breakup
+			: ELSE statement
+			| ;
+
+iterative_statements 
+			: WHILE '(' simple_expression ')' statement 
+			| FOR '(' expression ';' simple_expression ';' expression ')' 
+			| DO statement WHILE '(' simple_expression ')' ';';
+
+return_statement 
+			: RETURN return_statement_breakup;
+
+return_statement_breakup
+			: ';' 
+			| expression ';' ;
+
+break_statement 
+			: BREAK ';' ;
+
+string_initilization
+			: assignment_op STRING_CONSTANT { insV(); };
+
+array_initialization
+			: assignment_op '{' array_int_declarations '}';
+
+array_int_declarations
+			: INT_CONSTANT array_int_declarations_breakup;
+
+array_int_declarations_breakup
+			: ',' array_int_declarations 
+			| ;
+
+expression 
+			: mutable expression_breakup
+			| simple_expression ;
+
+expression_breakup
+			: assignment_op expression 
+			| PLUS_ASSIGN expression 
+			| MINUS_ASSIGN expression 
+			| MUL_ASSIGN expression 
+			| DIV_ASSIGN expression 
+			| MOD_ASSIGN expression 
+			| INCREMENT 
+			| DECREMENT ;
+
+simple_expression 
+			: and_expression simple_expression_breakup;
+
+simple_expression_breakup 
+			: OR and_expression simple_expression_breakup | ;
+
+and_expression 
+			: unary_relation_expression and_expression_breakup;
+
+and_expression_breakup
+			: AND unary_relation_expression and_expression_breakup
+			| ;
+
+unary_relation_expression 
+			: '!' unary_relation_expression 
+			| regular_expression ;
+
+regular_expression 
+			: sum_expression regular_expression_breakup;
+
+regular_expression_breakup
+			: relational_ops sum_expression 
+			| ;
+
+relational_ops 
+			: GR_THAN_EQ | LESS_THAN_EQ | '>' 
+			| '<' | EQ | NOT_EQ ;
+
+sum_expression 
+			: sum_expression sum_ops term 
+			| term ;
+
+sum_ops 
+			: '+' 
+			| '-' ;
+
+term
+			: term MULOP factor 
+			| factor ;
+
+MULOP 
+			: '*' | '/' | '%' ;
+
+factor 
+			: immutable | mutable ;
+
+mutable 
+			: IDENTIFIER 
+			| mutable mutable_breakup;
+
+mutable_breakup
+			: '[' expression ']' 
+			| '.' IDENTIFIER;
+
+immutable 
+			: '(' expression ')' 
+			| call | constant;
+
+call
+			: IDENTIFIER '(' arguments ')';
+
+arguments 
+			: arguments_list | ;
+
+arguments_list 
+			: expression A;
+
+A
+			: ',' expression A 
+			| ;
+
+constant 
+			: INT_CONSTANT 	{ insV(); } 
+			| STRING_CONSTANT	{ insV(); } 
+			| FLOAT_CONSTANT	{ insV(); } 
+			| CHAR_CONSTANT{ insV(); };
+
 %%
 
+extern FILE *yyin;
+extern int yylineno;
+extern char *yytext;
+void insertSTtype(char *,char *);
+void insertSTvalue(char *, char *);
+void incertCT(char *, char *);
+void printST();
+void printCT();
 
-
-double Evaluate (double lhs_value,int assign_type,double rhs_value)
+int main(int argc , char **argv)
 {
-	switch(assign_type)
+	extern FILE *yyin;
+	yyin = fopen("test input/input9.c", "r");
+	yyparse();
+
+	if(flag == 0)
 	{
-		case '=': return rhs_value;
-		case PLUS_ASSIGN: return (lhs_value + rhs_value);
-		case MINUS_ASSIGN: return (lhs_value - rhs_value);
-		case MUL_ASSIGN: return (lhs_value * rhs_value);
-		case DIV_ASSIGN: return (lhs_value / rhs_value);
-		case MOD_ASSIGN: return ((int)lhs_value % (int)rhs_value);
+		printf("Parsing Successful\n");
+		printST();
+
+		printCT();
 	}
 }
 
-int main(){
-	symbol_table=create_table();
-	constant_table=create_table();
-	extern FILE *yyin;
-	yyin=fopen("test input/input1.c","r");
-	yylex();
-	yyparse();
-	printf("\n\tSymbol table");
-	display(symbol_table);
-
-
-	return 0;
+void yyerror(char *s)
+{
+	printf("%d %s %s\n", yylineno, s, yytext);
+	flag=1;
+	printf("Parsing Failed\n");
 }
 
-int yyerror(char *msg)
+void ins()
 {
-	printf("Line no: %d Error message: %s Token: %s\n", yylineno, msg, yytext);
+	insert_type(current_id,current_type);
+}
+
+void insV()
+{
+	insert_value(current_id,current_val);
 }
