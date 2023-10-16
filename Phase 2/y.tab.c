@@ -67,10 +67,17 @@
 
 
 /* First part of user prologue.  */
-#line 1 "parse.y"
+#line 2 "parse.y"
 
-	#include <ctype.h>
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <stdint.h>
 	#include "symbol.h"
+	#include <limits.h>
+	#include <ctype.h>
+	int yylex(void);
+	
 	entry_make** symbol_table;
     entry_make** constant_table;
 	double Evaluate (double lhs_value,int assign_type,double rhs_value);
@@ -78,8 +85,9 @@
 	extern char *yytext;
 	int yyerror(char *msg);
 	int yylineno;
+	
 
-#line 83 "y.tab.c"
+#line 91 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -102,10 +110,7 @@
 #  endif
 # endif
 
-/* Use api.header.include to #include this header
-   instead of duplicating it here.  */
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -208,13 +213,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 14 "parse.y"
+#line 23 "parse.y"
 
 	double dval;
 	entry_make* entry;
 	int ival;
 
-#line 218 "y.tab.c"
+#line 223 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -229,7 +234,7 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -714,17 +719,17 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    62,    62,    63,    67,    68,    71,    73,    74,    76,
-      77,    80,    81,    84,    85,    88,    89,    90,    91,    92,
-      93,    94,    95,    96,    97,    98,    99,   102,   102,   104,
-     105,   107,   109,   110,   113,   115,   115,   117,   118,   119,
-     120,   121,   122,   123,   124,   125,   128,   129,   132,   133,
-     136,   139,   140,   141,   143,   144,   146,   147,   148,   151,
-     152,   156,   157,   160,   161,   162,   163,   164,   165,   166,
-     167,   168,   169,   170,   171,   176,   177,   178,   179,   180,
-     184,   185,   186,   187,   189,   192,   193,   194,   195,   196,
-     197,   200,   201,   202,   203,   204,   205,   206,   207,   208,
-     211,   212,   215,   217,   218,   222,   223,   226,   227
+       0,    71,    71,    72,    76,    77,    80,    82,    83,    85,
+      86,    89,    90,    93,    94,    97,    98,    99,   100,   101,
+     102,   103,   104,   105,   106,   107,   108,   111,   111,   113,
+     114,   116,   118,   119,   122,   124,   124,   126,   127,   128,
+     129,   130,   131,   132,   133,   134,   137,   138,   141,   142,
+     145,   148,   149,   150,   152,   153,   155,   156,   157,   160,
+     161,   165,   166,   169,   170,   171,   172,   173,   174,   175,
+     176,   177,   178,   179,   180,   185,   186,   187,   188,   189,
+     193,   194,   195,   196,   198,   201,   202,   203,   204,   205,
+     206,   209,   210,   211,   212,   213,   214,   215,   216,   217,
+     220,   221,   224,   226,   227,   231,   232,   235,   236
 };
 #endif
 
@@ -1450,325 +1455,325 @@ yyreduce:
   switch (yyn)
     {
   case 15: /* type_spec: INT  */
-#line 88 "parse.y"
+#line 97 "parse.y"
               {current_dtype=INT;}
-#line 1456 "y.tab.c"
+#line 1461 "y.tab.c"
     break;
 
   case 16: /* type_spec: SHORT INT  */
-#line 89 "parse.y"
+#line 98 "parse.y"
                    {current_dtype=SHORT;}
-#line 1462 "y.tab.c"
+#line 1467 "y.tab.c"
     break;
 
   case 17: /* type_spec: SHORT  */
-#line 90 "parse.y"
+#line 99 "parse.y"
                    {current_dtype=SHORT;}
-#line 1468 "y.tab.c"
+#line 1473 "y.tab.c"
     break;
 
   case 18: /* type_spec: LONG  */
-#line 91 "parse.y"
+#line 100 "parse.y"
                 {current_dtype=LONG;}
-#line 1474 "y.tab.c"
+#line 1479 "y.tab.c"
     break;
 
   case 19: /* type_spec: LONG_LONG  */
-#line 92 "parse.y"
+#line 101 "parse.y"
                    {current_dtype=LONG_LONG;}
-#line 1480 "y.tab.c"
+#line 1485 "y.tab.c"
     break;
 
   case 20: /* type_spec: LONG INT  */
-#line 93 "parse.y"
+#line 102 "parse.y"
                   {current_dtype=LONG;}
-#line 1486 "y.tab.c"
+#line 1491 "y.tab.c"
     break;
 
   case 21: /* type_spec: LONG_LONG INT  */
-#line 94 "parse.y"
+#line 103 "parse.y"
                        {current_dtype=LONG_LONG;}
-#line 1492 "y.tab.c"
+#line 1497 "y.tab.c"
     break;
 
   case 22: /* type_spec: FLOAT  */
-#line 95 "parse.y"
+#line 104 "parse.y"
                 {current_dtype=FLOAT;}
-#line 1498 "y.tab.c"
+#line 1503 "y.tab.c"
     break;
 
   case 23: /* type_spec: CHAR  */
-#line 96 "parse.y"
+#line 105 "parse.y"
                 {current_dtype=CHAR;}
-#line 1504 "y.tab.c"
+#line 1509 "y.tab.c"
     break;
 
   case 24: /* type_spec: DOUBLE  */
-#line 97 "parse.y"
+#line 106 "parse.y"
                 {current_dtype=DOUBLE;}
-#line 1510 "y.tab.c"
+#line 1515 "y.tab.c"
     break;
 
   case 25: /* type_spec: LONG FLOAT  */
-#line 98 "parse.y"
+#line 107 "parse.y"
                        {current_dtype=LONG;}
-#line 1516 "y.tab.c"
+#line 1521 "y.tab.c"
     break;
 
   case 26: /* type_spec: LONG_LONG FLOAT  */
-#line 99 "parse.y"
+#line 108 "parse.y"
                          {current_dtype=LONG_LONG;}
-#line 1522 "y.tab.c"
+#line 1527 "y.tab.c"
     break;
 
   case 57: /* sub_decl: IDENTIFIER  */
-#line 147 "parse.y"
+#line 156 "parse.y"
                                     {(yyvsp[0].entry) -> data_type = current_dtype;}
-#line 1528 "y.tab.c"
+#line 1533 "y.tab.c"
     break;
 
   case 61: /* expression: expression ',' sub_expr  */
-#line 156 "parse.y"
+#line 165 "parse.y"
                                                                                                 {(yyval.dval) = (yyvsp[-2].dval),(yyvsp[0].dval);}
-#line 1534 "y.tab.c"
+#line 1539 "y.tab.c"
     break;
 
   case 62: /* expression: sub_expr  */
-#line 157 "parse.y"
+#line 166 "parse.y"
                                                             {(yyval.dval) = (yyvsp[0].dval);}
-#line 1540 "y.tab.c"
+#line 1545 "y.tab.c"
     break;
 
   case 63: /* sub_expr: sub_expr '>' sub_expr  */
-#line 160 "parse.y"
+#line 169 "parse.y"
                                                                         {(yyval.dval) = ((yyvsp[-2].dval) > (yyvsp[0].dval));}
-#line 1546 "y.tab.c"
+#line 1551 "y.tab.c"
     break;
 
   case 64: /* sub_expr: sub_expr '<' sub_expr  */
-#line 161 "parse.y"
+#line 170 "parse.y"
                                                                         {(yyval.dval) = ((yyvsp[-2].dval) < (yyvsp[0].dval));}
-#line 1552 "y.tab.c"
+#line 1557 "y.tab.c"
     break;
 
   case 65: /* sub_expr: sub_expr EQ sub_expr  */
-#line 162 "parse.y"
+#line 171 "parse.y"
                                                                         {(yyval.dval) = ((yyvsp[-2].dval) == (yyvsp[0].dval));}
-#line 1558 "y.tab.c"
+#line 1563 "y.tab.c"
     break;
 
   case 66: /* sub_expr: sub_expr NOT_EQ sub_expr  */
-#line 163 "parse.y"
+#line 172 "parse.y"
                                                 {(yyval.dval) = ((yyvsp[-2].dval) != (yyvsp[0].dval));}
-#line 1564 "y.tab.c"
+#line 1569 "y.tab.c"
     break;
 
   case 67: /* sub_expr: sub_expr LESS_THAN_EQ sub_expr  */
-#line 164 "parse.y"
+#line 173 "parse.y"
                                                        {(yyval.dval) = ((yyvsp[-2].dval) <= (yyvsp[0].dval));}
-#line 1570 "y.tab.c"
+#line 1575 "y.tab.c"
     break;
 
   case 68: /* sub_expr: sub_expr GR_THAN_EQ sub_expr  */
-#line 165 "parse.y"
+#line 174 "parse.y"
                                                      {(yyval.dval) = ((yyvsp[-2].dval) >= (yyvsp[0].dval));}
-#line 1576 "y.tab.c"
+#line 1581 "y.tab.c"
     break;
 
   case 69: /* sub_expr: sub_expr LOGICAL_AND sub_expr  */
-#line 166 "parse.y"
+#line 175 "parse.y"
                                                     {(yyval.dval) = ((yyvsp[-2].dval) && (yyvsp[0].dval));}
-#line 1582 "y.tab.c"
+#line 1587 "y.tab.c"
     break;
 
   case 70: /* sub_expr: sub_expr LOGICAL_OR sub_expr  */
-#line 167 "parse.y"
+#line 176 "parse.y"
                                                     {(yyval.dval) = ((yyvsp[-2].dval) || (yyvsp[0].dval));}
-#line 1588 "y.tab.c"
+#line 1593 "y.tab.c"
     break;
 
   case 71: /* sub_expr: '!' sub_expr  */
-#line 168 "parse.y"
+#line 177 "parse.y"
                                                     {(yyval.dval) = (!(yyvsp[0].dval));}
-#line 1594 "y.tab.c"
+#line 1599 "y.tab.c"
     break;
 
   case 72: /* sub_expr: arithmetic_expr  */
-#line 169 "parse.y"
+#line 178 "parse.y"
                                                                                 {(yyval.dval) = (yyvsp[0].dval);}
-#line 1600 "y.tab.c"
+#line 1605 "y.tab.c"
     break;
 
   case 73: /* sub_expr: assignment_expr  */
-#line 170 "parse.y"
+#line 179 "parse.y"
                                                 {(yyval.dval) = (yyvsp[0].dval);}
-#line 1606 "y.tab.c"
+#line 1611 "y.tab.c"
     break;
 
   case 74: /* sub_expr: unary_expr  */
-#line 171 "parse.y"
+#line 180 "parse.y"
                                                     {(yyval.dval) = (yyvsp[0].dval);}
-#line 1612 "y.tab.c"
+#line 1617 "y.tab.c"
     break;
 
   case 75: /* assignment_expr: lhs assign_op arithmetic_expr  */
-#line 176 "parse.y"
+#line 185 "parse.y"
                                                    {(yyval.dval) = (yyvsp[-2].entry)->token_val = Evaluate((yyvsp[-2].entry)->token_val,(yyvsp[-1].ival),(yyvsp[0].dval));}
-#line 1618 "y.tab.c"
+#line 1623 "y.tab.c"
     break;
 
   case 76: /* assignment_expr: lhs assign_op array_index  */
-#line 177 "parse.y"
+#line 186 "parse.y"
                                                    {(yyval.dval) = 0;}
-#line 1624 "y.tab.c"
+#line 1629 "y.tab.c"
     break;
 
   case 77: /* assignment_expr: lhs assign_op function_call  */
-#line 178 "parse.y"
+#line 187 "parse.y"
                                                    {(yyval.dval) = 0;}
-#line 1630 "y.tab.c"
+#line 1635 "y.tab.c"
     break;
 
   case 78: /* assignment_expr: lhs assign_op unary_expr  */
-#line 179 "parse.y"
+#line 188 "parse.y"
                                                        {(yyval.dval) = (yyvsp[-2].entry)->token_val = Evaluate((yyvsp[-2].entry)->token_val,(yyvsp[-1].ival),(yyvsp[0].dval));}
-#line 1636 "y.tab.c"
+#line 1641 "y.tab.c"
     break;
 
   case 79: /* assignment_expr: unary_expr assign_op unary_expr  */
-#line 180 "parse.y"
+#line 189 "parse.y"
                                                        {(yyval.dval) = 0;}
-#line 1642 "y.tab.c"
+#line 1647 "y.tab.c"
     break;
 
   case 80: /* unary_expr: lhs INCREMENT  */
-#line 184 "parse.y"
+#line 193 "parse.y"
                                                        {(yyval.dval) = (yyvsp[-1].entry)->token_val = ((yyvsp[-1].entry)->token_val)++;}
-#line 1648 "y.tab.c"
+#line 1653 "y.tab.c"
     break;
 
   case 81: /* unary_expr: lhs DECREMENT  */
-#line 185 "parse.y"
+#line 194 "parse.y"
                                                        {(yyval.dval) = (yyvsp[-1].entry)->token_val = ((yyvsp[-1].entry)->token_val)--;}
-#line 1654 "y.tab.c"
+#line 1659 "y.tab.c"
     break;
 
   case 82: /* unary_expr: DECREMENT lhs  */
-#line 186 "parse.y"
+#line 195 "parse.y"
                                                        {(yyval.dval) = (yyvsp[0].entry)->token_val = --((yyvsp[0].entry)->token_val);}
-#line 1660 "y.tab.c"
+#line 1665 "y.tab.c"
     break;
 
   case 83: /* unary_expr: INCREMENT lhs  */
-#line 187 "parse.y"
+#line 196 "parse.y"
                                                        {(yyval.dval) = (yyvsp[0].entry)->token_val = ++((yyvsp[0].entry)->token_val);}
-#line 1666 "y.tab.c"
+#line 1671 "y.tab.c"
     break;
 
   case 85: /* assign_op: '='  */
-#line 192 "parse.y"
+#line 201 "parse.y"
                                                    {(yyval.ival) = '=';}
-#line 1672 "y.tab.c"
+#line 1677 "y.tab.c"
     break;
 
   case 86: /* assign_op: PLUS_ASSIGN  */
-#line 193 "parse.y"
+#line 202 "parse.y"
                                                 {(yyval.ival) = PLUS_ASSIGN;}
-#line 1678 "y.tab.c"
+#line 1683 "y.tab.c"
     break;
 
   case 87: /* assign_op: MINUS_ASSIGN  */
-#line 194 "parse.y"
+#line 203 "parse.y"
                                                    {(yyval.ival) = MINUS_ASSIGN;}
-#line 1684 "y.tab.c"
+#line 1689 "y.tab.c"
     break;
 
   case 88: /* assign_op: MUL_ASSIGN  */
-#line 195 "parse.y"
+#line 204 "parse.y"
                                                    {(yyval.ival) = MUL_ASSIGN;}
-#line 1690 "y.tab.c"
+#line 1695 "y.tab.c"
     break;
 
   case 89: /* assign_op: DIV_ASSIGN  */
-#line 196 "parse.y"
+#line 205 "parse.y"
                                                    {(yyval.ival) = DIV_ASSIGN;}
-#line 1696 "y.tab.c"
+#line 1701 "y.tab.c"
     break;
 
   case 90: /* assign_op: MOD_ASSIGN  */
-#line 197 "parse.y"
+#line 206 "parse.y"
                                                    {(yyval.ival) = MOD_ASSIGN;}
-#line 1702 "y.tab.c"
+#line 1707 "y.tab.c"
     break;
 
   case 91: /* arithmetic_expr: arithmetic_expr '+' arithmetic_expr  */
-#line 200 "parse.y"
+#line 209 "parse.y"
                                                         {(yyval.dval) = (yyvsp[-2].dval) + (yyvsp[0].dval);}
-#line 1708 "y.tab.c"
+#line 1713 "y.tab.c"
     break;
 
   case 92: /* arithmetic_expr: arithmetic_expr '-' arithmetic_expr  */
-#line 201 "parse.y"
+#line 210 "parse.y"
                                                         {(yyval.dval) = (yyvsp[-2].dval) - (yyvsp[0].dval);}
-#line 1714 "y.tab.c"
+#line 1719 "y.tab.c"
     break;
 
   case 93: /* arithmetic_expr: arithmetic_expr '*' arithmetic_expr  */
-#line 202 "parse.y"
+#line 211 "parse.y"
                                                         {(yyval.dval) = (yyvsp[-2].dval) * (yyvsp[0].dval);}
-#line 1720 "y.tab.c"
+#line 1725 "y.tab.c"
     break;
 
   case 94: /* arithmetic_expr: arithmetic_expr '/' arithmetic_expr  */
-#line 203 "parse.y"
+#line 212 "parse.y"
                                                         {(yyval.dval) = ((yyvsp[0].dval) == 0) ? yyerror("Divide by 0!") : ((yyvsp[-2].dval) / (yyvsp[0].dval));}
-#line 1726 "y.tab.c"
+#line 1731 "y.tab.c"
     break;
 
   case 95: /* arithmetic_expr: arithmetic_expr '%' arithmetic_expr  */
-#line 204 "parse.y"
+#line 213 "parse.y"
                                                             {(yyval.dval) = (int)(yyvsp[-2].dval) % (int)(yyvsp[0].dval);}
-#line 1732 "y.tab.c"
+#line 1737 "y.tab.c"
     break;
 
   case 96: /* arithmetic_expr: '(' arithmetic_expr ')'  */
-#line 205 "parse.y"
+#line 214 "parse.y"
                                                             {(yyval.dval) = (yyvsp[-1].dval);}
-#line 1738 "y.tab.c"
+#line 1743 "y.tab.c"
     break;
 
   case 97: /* arithmetic_expr: '-' arithmetic_expr  */
-#line 206 "parse.y"
+#line 215 "parse.y"
                                                         {(yyval.dval) = -(yyvsp[0].dval);}
-#line 1744 "y.tab.c"
+#line 1749 "y.tab.c"
     break;
 
   case 98: /* arithmetic_expr: IDENTIFIER  */
-#line 207 "parse.y"
+#line 216 "parse.y"
                                                         {(yyval.dval) = (yyvsp[0].entry) -> token_val;}
-#line 1750 "y.tab.c"
+#line 1755 "y.tab.c"
     break;
 
   case 99: /* arithmetic_expr: constant  */
-#line 208 "parse.y"
+#line 217 "parse.y"
                                                         {(yyval.dval) = (yyvsp[0].dval);}
-#line 1756 "y.tab.c"
+#line 1761 "y.tab.c"
     break;
 
   case 100: /* constant: DEC_CONSTANT  */
-#line 211 "parse.y"
+#line 220 "parse.y"
                                                         {(yyval.dval) = (yyvsp[0].dval);}
-#line 1762 "y.tab.c"
+#line 1767 "y.tab.c"
     break;
 
   case 101: /* constant: HEX_CONSTANT  */
-#line 212 "parse.y"
+#line 221 "parse.y"
                                                         {(yyval.dval) = (yyvsp[0].dval);}
-#line 1768 "y.tab.c"
+#line 1773 "y.tab.c"
     break;
 
 
-#line 1772 "y.tab.c"
+#line 1777 "y.tab.c"
 
       default: break;
     }
@@ -1961,7 +1966,9 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 230 "parse.y"
+#line 239 "parse.y"
+
+
 
 
 double Evaluate (double lhs_value,int assign_type,double rhs_value)
@@ -1982,25 +1989,16 @@ int main(){
 	constant_table=create_table();
 	extern FILE *yyin;
 	yyin=fopen("test input/input1.c","r");
-	if(!yyparse())
-	{
-		printf("\nParsing complete\n");
-	}
-	else
-	{
-			printf("\nParsing failed\n");
-	}
-
-
+	yylex();
+	yyparse();
 	printf("\n\tSymbol table");
 	display(symbol_table);
 
 
-	fclose(yyin);
 	return 0;
 }
 
 int yyerror(char *msg)
 {
-	printf("Line no: %d Error message: %s Token: %s\n", yylineno, msg, yytext[0]);
+	printf("Line no: %d Error message: %s Token: %s\n", yylineno, msg, yytext);
 }

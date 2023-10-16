@@ -1,15 +1,13 @@
 %option noyywrap
-%option noinput 
+%option noinput nounput
 %{
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "symbol.h"
-#include <limits.h>
 #include "y.tab.h"
+int comment=0;
+
+
 entry_make** symbol_table;
 entry_make** constant_table;
-int comment=0;
 %}
 
 alpha [a-zA-Z]

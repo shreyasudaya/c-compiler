@@ -577,19 +577,17 @@ char *yytext;
 #line 1 "lex.l"
 #define YY_NO_INPUT 1
 #line 4 "lex.l"
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "symbol.h"
-#include <limits.h>
 #include "y.tab.h"
+int comment=0;
+
+
 entry_make** symbol_table;
 entry_make** constant_table;
-int comment=0;
-#line 590 "lex.yy.c"
+#line 588 "lex.yy.c"
 
 /*%x PREPROC*/
-#line 593 "lex.yy.c"
+#line 591 "lex.yy.c"
 
 #define INITIAL 0
 #define COMM 1
@@ -650,8 +648,6 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput ( int c, char *buf_ptr  );
     
 #endif
 
@@ -807,9 +803,9 @@ YY_DECL
 		}
 
 	{
-#line 24 "lex.l"
+#line 22 "lex.l"
 
-#line 813 "lex.yy.c"
+#line 809 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -874,127 +870,127 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 25 "lex.l"
+#line 23 "lex.l"
 {return INT;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 26 "lex.l"
+#line 24 "lex.l"
 {return LONG;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 27 "lex.l"
+#line 25 "lex.l"
 {return LONG_LONG;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "lex.l"
+#line 26 "lex.l"
 {return SHORT;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 29 "lex.l"
+#line 27 "lex.l"
 {return SIGNED;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 30 "lex.l"
+#line 28 "lex.l"
 {return UNSIGNED;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 31 "lex.l"
+#line 29 "lex.l"
 {return FOR;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 32 "lex.l"
+#line 30 "lex.l"
 {return BREAK;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 33 "lex.l"
+#line 31 "lex.l"
 {return CONTINUE;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 34 "lex.l"
+#line 32 "lex.l"
 {return RETURN;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 35 "lex.l"
+#line 33 "lex.l"
 {return FLOAT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 36 "lex.l"
+#line 34 "lex.l"
 {return DOUBLE;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "lex.l"
+#line 35 "lex.l"
 {return CHAR;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 38 "lex.l"
+#line 36 "lex.l"
 {return IF;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 39 "lex.l"
+#line 37 "lex.l"
 {return ELSE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 41 "lex.l"
+#line 39 "lex.l"
 {yylval.entry = insert(symbol_table, yytext, INT_MAX);return IDENTIFIER;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 42 "lex.l"
+#line 40 "lex.l"
 ;
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 43 "lex.l"
+#line 41 "lex.l"
 {yylval.dval=(int)strtol(yytext, NULL, 16); return  HEX_CONSTANT;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 44 "lex.l"
+#line 42 "lex.l"
 {yylval.dval=atoi(yytext); return  DEC_CONSTANT;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 45 "lex.l"
+#line 43 "lex.l"
 {comment=yylineno;BEGIN COMM;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 46 "lex.l"
+#line 44 "lex.l"
 ;
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 47 "lex.l"
+#line 45 "lex.l"
 {BEGIN INITIAL;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 48 "lex.l"
+#line 46 "lex.l"
 {printf("Line %d: Nested Comments not valid!\n",yylineno);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 50 "lex.l"
+#line 48 "lex.l"
 ;
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 51 "lex.l"
+#line 49 "lex.l"
 {
 
   if(yytext[yyleng-2]=='\\') // check if it was an escaped quote
@@ -1011,96 +1007,96 @@ case 26:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 61 "lex.l"
+#line 59 "lex.l"
 {printf("Line %3d: Unterminated string %s\n",yylineno,yytext);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 62 "lex.l"
+#line 60 "lex.l"
 {printf("Line %3d: Illegal identifier name %s\n",yylineno,yytext);}
 	YY_BREAK
 case 28:
 /* rule 28 can match eol */
 YY_RULE_SETUP
-#line 63 "lex.l"
+#line 61 "lex.l"
 {yylineno++;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 64 "lex.l"
+#line 62 "lex.l"
 {return DECREMENT;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 65 "lex.l"
+#line 63 "lex.l"
 {return INCREMENT;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 66 "lex.l"
+#line 64 "lex.l"
 {return LOGICAL_AND;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 67 "lex.l"
+#line 65 "lex.l"
 {return LOGICAL_OR;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 68 "lex.l"
+#line 66 "lex.l"
 {return LESS_THAN_EQ;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 69 "lex.l"
+#line 67 "lex.l"
 {return GR_THAN_EQ;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 70 "lex.l"
+#line 68 "lex.l"
 {return EQ;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 71 "lex.l"
+#line 69 "lex.l"
 {return NOT_EQ;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 74 "lex.l"
+#line 72 "lex.l"
 {return MINUS_ASSIGN;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 75 "lex.l"
+#line 73 "lex.l"
 {return PLUS_ASSIGN;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 76 "lex.l"
+#line 74 "lex.l"
 {return MUL_ASSIGN;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 77 "lex.l"
+#line 75 "lex.l"
 {return DIV_ASSIGN;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 78 "lex.l"
+#line 76 "lex.l"
 {return MOD_ASSIGN;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 80 "lex.l"
+#line 78 "lex.l"
 {return yytext[0];}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 81 "lex.l"
+#line 79 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1104 "lex.yy.c"
+#line 1100 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(COMM):
 	yyterminate();
@@ -1436,43 +1432,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -2106,6 +2065,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 81 "lex.l"
+#line 79 "lex.l"
 
 

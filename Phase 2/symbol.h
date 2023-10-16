@@ -71,8 +71,10 @@ entry_make* search(entry_make** hash_ptr, char* lexeme){
 
 entry_make* insert( entry_make** hash_ptr, char* lexeme, int token_val )
 {
-	if(search( hash_ptr, lexeme )!= NULL)
-	    return;
+
+    entry_make* finder=search( hash_ptr, lexeme );
+	if(finder!= NULL)
+	    return finder;
 
 	uint32_t idx;
 	entry_make* newentry = NULL;
@@ -100,7 +102,7 @@ entry_make* insert( entry_make** hash_ptr, char* lexeme, int token_val )
 	}
 }
 
-void print_table(entry_make** hash_ptr){
+void display(entry_make** hash_ptr){
 	
 	entry_make* iter;
 	printf("\n===================================\n");

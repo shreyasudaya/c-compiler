@@ -1,6 +1,12 @@
 %{
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
+	#include <stdint.h>
+	#include <limits.h>
 	#include <ctype.h>
-	#include "symbol.h"
+	int yylex(void);
+	
 	entry_make** symbol_table;
     entry_make** constant_table;
 	double Evaluate (double lhs_value,int assign_type,double rhs_value);
@@ -8,6 +14,7 @@
 	extern char *yytext;
 	int yyerror(char *msg);
 	int yylineno;
+	
 %}
 
 %union
@@ -67,9 +74,9 @@ start: start build
 build: function
 	 |declaration
 ;
-
+//function
 function: type IDENTIFIER '(' arg_list ')' compound_stmt;
-
+//data type
 type: data_type pointer
 	|data_type;
 
@@ -80,7 +87,7 @@ pointer: '*' pointer
 data_type: sign_spec type_spec
 		|type_spec
 ;
-
+//all possible combinations
 sign_spec :SIGNED
 	|UNSIGNED
 	;
@@ -98,7 +105,7 @@ type_spec:INT {current_dtype=INT;}
 	|LONG FLOAT    {current_dtype=LONG;}
 	|LONG_LONG FLOAT {current_dtype=LONG_LONG;}
 	;
-
+//arguments
 arg_list: arguments|
 ;
 arguments: arguments ',' arg
@@ -229,6 +236,8 @@ parameter: sub_expr
         ;
 %%
 
+
+
 double Evaluate (double lhs_value,int assign_type,double rhs_value)
 {
 	switch(assign_type)
@@ -247,25 +256,16 @@ int main(){
 	constant_table=create_table();
 	extern FILE *yyin;
 	yyin=fopen("test input/input1.c","r");
-	if(!yyparse())
-	{
-		printf("\nParsing complete\n");
-	}
-	else
-	{
-			printf("\nParsing failed\n");
-	}
-
-
+	yylex();
+	yyparse();
 	printf("\n\tSymbol table");
 	display(symbol_table);
 
 
-	fclose(yyin);
 	return 0;
 }
 
 int yyerror(char *msg)
 {
-	printf("Line no: %d Error message: %s Token: %s\n", yylineno, msg, yytext[0]);
+	printf("Line no: %d Error message: %s Token: %s\n", yylineno, msg, yytext);
 }
