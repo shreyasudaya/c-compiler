@@ -27,6 +27,7 @@
 %token WHILE FOR DO 
 %token BREAK
 %token ENDIF
+%expect 2
 
 %token identifier
 %token integer_constant string_constant float_constant character_constant
