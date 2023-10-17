@@ -317,7 +317,7 @@ void printCT();
 
 int main(int argc , char **argv)
 {
-	yyin = fopen(argv[1], "r");
+	yyin = fopen("test/input4", "r");
 	yyparse();
 
 	if(flag == 0)
