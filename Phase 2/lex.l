@@ -1,8 +1,9 @@
 %{
 	#include <stdio.h>
 	#include <string.h>
-	#include "y.tab.h"
-
+	#include "parse.tab.h"
+	//#include "y.tab.h"
+	int yylineno;
 	#define ANSI_COLOR_RED		"\x1b[31m"
 	#define ANSI_COLOR_GREEN	"\x1b[32m"
 	#define ANSI_COLOR_YELLOW	"\x1b[33m"
@@ -265,46 +266,42 @@ IN "include"
 "break"			{ insertST(yytext, "Keyword");  return BREAK;}
 
 
-"++"			{ return increment_operator; }
-"--"			{ return decrement_operator; }
-"<<"			{ return leftshift_operator; }
-">>"			{ return rightshift_operator; }
-"<="			{ return lessthan_assignment_operator; }
-"<"				{ return lessthan_operator; }
-">="			{ return greaterthan_assignment_operator; }
-">"				{ return greaterthan_operator; }
-"=="			{ return equality_operator; }
-"!="			{ return inequality_operator; }
-"&&"			{ return AND_operator; }
-"||"			{ return OR_operator; }
-"^"				{ return caret_operator; }
-"*="			{ return multiplication_assignment_operator; }
-"/="			{ return division_assignment_operator; }
-"%="			{ return modulo_assignment_operator; }
-"+="			{ return addition_assignment_operator; }
-"-="			{ return subtraction_assignment_operator; }
-"<<="			{ return leftshift_assignment_operator; }
-">>="			{ return rightshift_assignment_operator; }
-"&="			{ return AND_assignment_operator; }
-"^="			{ return XOR_assignment_operator; }
-"|="			{ return OR_assignment_operator; }
-"&"				{ return amp_operator; }
-"!"				{ return exclamation_operator; }
-"~"				{ return tilde_operator; }
-"-"				{ return subtract_operator; }
-"+"				{ return add_operator; }
-"*"				{ return multiplication_operator; }
-"/"				{ return division_operator; }
-"%"				{ return modulo_operator; }
-"|"				{ return pipe_operator; }
+"++"			{ return INCREMENT; }
+"--"			{ return DECREMENT; }
+"<="			{ return LESS_THAN_EQ; }
+"<"				{ return LESS_THAN; }
+">="			{ return GR_THAN_EQ; }
+">"				{ return GR_THAN; }
+"=="			{ return EQ; }
+"!="			{ return NOT_EQ; }
+"&&"			{ return AND; }
+"||"			{ return OR; }
+"^"				{ return XOR; }
+"*="			{ return MUL_ASSIGN; }
+"/="			{ return DIV_ASSIGN; }
+"%="			{ return MOD_ASSIGN; }
+"+="			{ return PLUS_ASSIGN; }
+"-="			{ return MINUS_ASSIGN; }
+"&="			{ return AND_ASSIGN; }
+"^="			{ return XOR_ASSIGN; }
+"|="			{ return OR_ASSIGN; }
+"&"				{ return AMP; }
+"!"				{ return EXC; }
+"~"				{ return TAB; }
+"-"				{ return MINUS; }
+"+"				{ return PLUS; }
+"*"				{ return MUL; }
+"/"				{ return DIV; }
+"%"				{ return MOD; }
+"|"				{ return PIPE; }
 \=				{ return assignment_operator;}
 
 \"[^\n]*\"/[;|,|\)] 			{strcpy(curval,yytext); insertCT(yytext,"String Constant"); return string_constant;}
 \'[A-Z|a-z]\'/[;|,|\)|:] 		{strcpy(curval,yytext); insertCT(yytext,"Character Constant"); return character_constant;}
-[a-z|A-Z]([a-z|A-Z]|[0-9])*/\[ 	{strcpy(curid,yytext); insertST(yytext, "Array Identifier");  return identifier;}
+[a-z|A-Z]([a-z|A-Z]|[0-9])*/\[ 	{strcpy(curid,yytext); insertST(yytext, "Array Identifier");  return IDENTIFIER;}
 [1-9][0-9]*|0/[;|,|" "|\)|<|>|=|\!|\||&|\+|\-|\*|\/|\%|~|\]|\}|:|\n|\t|\^] 	{strcpy(curval,yytext); insertCT(yytext, "Number Constant"); return integer_constant;}
 ([0-9]*)\.([0-9]+)/[;|,|" "|\)|<|>|=|\!|\||&|\+|\-|\*|\/|\%|~|\n|\t|\^] 	{strcpy(curval,yytext); insertCT(yytext, "Floating Constant"); return float_constant;}
-[A-Za-z_][A-Za-z_0-9]* {strcpy(curid,yytext);insertST(yytext,"Identifier");  return identifier;}
+[A-Za-z_][A-Za-z_0-9]* {strcpy(curid,yytext);insertST(yytext,"Identifier");  return IDENTIFIER;}
 
 (.?) {
 		if(yytext[0]=='#')

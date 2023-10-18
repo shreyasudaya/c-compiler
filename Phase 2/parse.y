@@ -29,32 +29,31 @@
 %token ENDIF
 %expect 2
 
-%token identifier
+%token IDENTIFIER
 %token integer_constant string_constant float_constant character_constant
 
 %nonassoc ELSE
 
-%right leftshift_assignment_operator rightshift_assignment_operator
-%right XOR_assignment_operator OR_assignment_operator
-%right AND_assignment_operator modulo_assignment_operator
-%right multiplication_assignment_operator division_assignment_operator
-%right addition_assignment_operator subtraction_assignment_operator
+%right XOR_ASSIGN OR_ASSIGN
+%right AND_ASSIGN MOD_ASSIGN
+%right MUL_ASSIGN DIV_ASSIGN
+%right PLUS_ASSIGN MINUS_ASSIGN
 %right assignment_operator
 
-%left OR_operator
-%left AND_operator
-%left pipe_operator
-%left caret_operator
-%left amp_operator
-%left equality_operator inequality_operator
-%left lessthan_assignment_operator lessthan_operator greaterthan_assignment_operator greaterthan_operator
-%left leftshift_operator rightshift_operator 
-%left add_operator subtract_operator
-%left multiplication_operator division_operator modulo_operator
+%left OR
+%left AND
+%left PIPE
+%left XOR
+%left AMP
+%left EQ NOT_EQ
+%left LESS_THAN_EQ LESS_THAN GR_THAN_EQ GR_THAN
+%left LSHIFT RSHIFT
+%left PLUS MINUS
+%left MUL DIV MOD
 
 %right SIZEOF
-%right tilde_operator exclamation_operator
-%left increment_operator decrement_operator 
+%right TAB EXC
+%left INCREMENT DECREMENT
 
 
 %start program
@@ -87,7 +86,7 @@ V
 			| ;
 
 variable_declaration_identifier 
-			: identifier { ins(); } vdi;
+			: IDENTIFIER { ins(); } vdi;
 
 vdi : identifier_array_type | assignment_operator expression ; 
 
@@ -125,19 +124,19 @@ short_grammar
 			: INT | ;
 
 structure_definition
-			: STRUCT identifier { ins(); } '{' V1  '}' ';';
+			: STRUCT IDENTIFIER { ins(); } '{' V1  '}' ';';
 
 V1 : variable_declaration V1 | ;
 
 structure_declaration 
-			: STRUCT identifier variable_declaration_list;
+			: STRUCT IDENTIFIER variable_declaration_list;
 
 
 function_declaration
 			: function_declaration_type function_declaration_param_statement;
 
 function_declaration_type
-			: type_specifier identifier '('  { ins();};
+			: type_specifier IDENTIFIER '('  { ins();};
 
 function_declaration_param_statement
 			: params ')' statement;
@@ -156,7 +155,7 @@ parameters_identifier_list_breakup
 			| ;
 
 param_identifier 
-			: identifier { ins(); } param_identifier_breakup;
+			: IDENTIFIER { ins(); } param_identifier_breakup;
 
 param_identifier_breakup
 			: '[' ']'
@@ -220,76 +219,77 @@ expression
 
 expression_breakup
 			: assignment_operator expression 
-			| addition_assignment_operator expression 
-			| subtraction_assignment_operator expression 
-			| multiplication_assignment_operator expression 
-			| division_assignment_operator expression 
-			| modulo_assignment_operator expression 
-			| increment_operator 
-			| decrement_operator ;
+			| PLUS_ASSIGN expression 
+			| MINUS_ASSIGN expression 
+			| MUL_ASSIGN expression 
+			| DIV_ASSIGN expression 
+			| MOD_ASSIGN expression 
+			| INCREMENT
+			| DECREMENT;
 
 simple_expression 
 			: and_expression simple_expression_breakup;
 
 simple_expression_breakup 
-			: OR_operator and_expression simple_expression_breakup | ;
+			: OR and_expression simple_expression_breakup | ;
 
 and_expression 
 			: unary_relation_expression and_expression_breakup;
 
 and_expression_breakup
-			: AND_operator unary_relation_expression and_expression_breakup
+			: AND unary_relation_expression and_expression_breakup
 			| ;
 
 unary_relation_expression 
-			: exclamation_operator unary_relation_expression 
+			: EXC unary_relation_expression 
 			| regular_expression ;
 
 regular_expression 
 			: sum_expression regular_expression_breakup;
 
 regular_expression_breakup
-			: relational_operators sum_expression;
+			: relational_operators sum_expression 
+			| ;
 
 relational_operators 
-			: greaterthan_assignment_operator | lessthan_assignment_operator | greaterthan_operator 
-			| lessthan_operator | equality_operator | inequality_operator ;
+			: GR_THAN_EQ | LESS_THAN_EQ | GR_THAN 
+			| LESS_THAN | EQ | NOT_EQ ;
 
 sum_expression 
 			: sum_expression sum_operators term 
 			| term ;
 
 sum_operators 
-			: add_operator 
-			| subtract_operator ;
+			: PLUS 
+			| MINUS ;
 
 term
 			: term MULOP factor 
 			| factor ;
 
 MULOP 
-			: multiplication_operator | division_operator | modulo_operator ;
+			: MUL | DIV | MOD ;
 
 factor 
 			: immutable | mutable ;
 
 mutable 
-			: identifier 
+			: IDENTIFIER 
 			| mutable mutable_breakup;
 
 mutable_breakup
 			: '[' expression ']' 
-			| '.' identifier;
+			| '.' IDENTIFIER;
 
 immutable 
 			: '(' expression ')' 
 			| call | constant;
 
 call
-			: identifier '(' arguments ')';
+			: IDENTIFIER '(' arguments ')';
 
 arguments 
-			: arguments_list ;
+			: arguments_list | ;
 
 arguments_list 
 			: expression A;
@@ -317,7 +317,7 @@ void printCT();
 
 int main(int argc , char **argv)
 {
-	yyin = fopen("test/input4", "r");
+	yyin = fopen(argv[1], "r");
 	yyparse();
 
 	if(flag == 0)
