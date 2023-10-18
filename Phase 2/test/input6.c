@@ -1,23 +1,12 @@
-int main()
+#include<stdio.h>
+#define x 3
+
+int main() 
 {
-    int i, n;
-    for(i = 0; i < n; i++)
+    int a=4 
+    while(a<10) 
     {
-        n = 1;
-    }
-    do{
-        n = 2;
-    }while(n == 1);
-    if(n < 2)
-    {
-    	i = 1
-    }
-    else
-    {
-    	i = 2;
-    }
-    else
-    {
-    	i = 3;
+        a=a+1;
+        printf("%d\n",a) 
     }
 }

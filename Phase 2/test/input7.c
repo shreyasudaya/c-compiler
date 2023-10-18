@@ -1,9 +1,34 @@
-void func(int a, char b, float c) {
-    printf("%d\n", a);
-}
+//modifiers
+//arithmetic operation
+//logical operations
 
-int main() {
-    int a[10] = {1, 2};
-    func(9, 'c', 6.3);
-    return 0;
+#include<stdio.h>
+int main()
+{
+    long int a, b;
+    unsigned long int x;
+    signed short int y;
+    signed short z;
+    int w;
+    a = 23;
+    b = 15;
+    int c = a + b;
+    printf("%d",c);
+    c = a - b;
+    printf("%d",c);
+    c = a * b;
+    printf("%d",c);
+    c = a/b;
+    printf("%d",c);
+    c = a%b;
+    printf("%d",c);
+
+    c = (a>=b);
+    printf("%d",c);
+    c = (a<=b);
+    printf("%d",c);
+    c = (a==b);
+    printf("%d",c);
+    c = (a!=b);
+    printf("%d",c);
 }

@@ -1,11 +1,15 @@
+#include<stdio.h>
+
 int main()
 {
-    int i, n;
-    for(i = 0; i < n; i++)
+    int a[4],i=0,b;
+
+    while(i<4)
     {
-        n = 1;
+	a[i]=i;
+	i++;
     }
-    do{
-        n = 2;
-    }while(n == 1);
+    b = a[0]a[1]+;
+    printf("%d",b);
 }
+

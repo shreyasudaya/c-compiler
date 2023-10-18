@@ -1,12 +1,22 @@
-int main() {
-    int a = 6, i;
-    if (a == 2)
-        if (a == 3) printf("3");
-        else printf("None");
-    while (a > 3) {
-        for (i=1; i<7; i++) {
-            a--;
-        }
-    }
-    return 0;
+#include<stdio.h>
+
+struct student
+{
+  int rollNum;
+  int marks;
+};
+
+int main()
+{
+ int a = 1, b=0;
+ struct student student1;
+ student1.rollNum = 1;
+ student1.marks = 90;
+
+ if(a >= 1 && a <= 10)
+   	b++;
+
+ else
+       {  b--;
+        /* }
 }

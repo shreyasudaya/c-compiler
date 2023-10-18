@@ -1,8 +1,18 @@
-int main(){
-    float a = 10;
-    int b;
-    if(a < 20)
+#include<stdio.h>
+
+int main()
+{
+    int a = int b = 10;
+    int c;
+
+    if(a>b)
     {
-        b = a;
+      c = 1;
     }
+      else
+      {
+        c = 0;
+      }
+
+    printf("Result: %d", c);
 }
