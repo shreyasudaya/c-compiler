@@ -188,7 +188,7 @@
 
 	void printST()
 	{
-		printf("%10s | %15s | %10s | %10s | %10s\n","SYMBOL", "CLASS", "TYPE","VALUE", "LINE NO");
+		printf("%s | %s | %s | %s | %s\n","SYMBOL", "CLASS", "TYPE","VALUE", "LINE NO");
 		for(int i=0;i<81;i++) {
 			printf("-");
 		}
@@ -199,14 +199,14 @@
 			{
 				continue;
 			}
-			printf("%10s | %15s | %10s | %10s | %10d\n",ST[i].name, ST[i].class, ST[i].type, ST[i].value, ST[i].lineno);
+			printf("%s | %s | %s | %s | %d\n",ST[i].name, ST[i].class, ST[i].type, ST[i].value, ST[i].lineno);
 		}
     }
 
 
 	void printCT()
 	{
-		printf("%10s | %15s\n","NAME", "TYPE");
+		printf("%s | %s\n","NAME", "TYPE");
 		for(int i=0;i<81;i++) {
 			printf("-");
 		}
@@ -216,7 +216,7 @@
 			if(CT[i].length == 0)
 				continue;
 
-			printf("%10s | %15s\n",CT[i].name, CT[i].type);
+			printf("%s | %s\n",CT[i].name, CT[i].type);
 		}
 	}
 	char curid[20];
