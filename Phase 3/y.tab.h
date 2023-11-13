@@ -66,58 +66,71 @@ extern int yydebug;
     STRUCT = 267,                  /* STRUCT  */
     UNION = 268,                   /* UNION  */
     VOLATILE = 269,                /* VOLATILE  */
-    ENUM = 270,                    /* ENUM  */
-    ELLIPSIS = 271,                /* ELLIPSIS  */
-    RETURN = 272,                  /* RETURN  */
-    MAIN = 273,                    /* MAIN  */
-    VOID = 274,                    /* VOID  */
-    WHILE = 275,                   /* WHILE  */
-    FOR = 276,                     /* FOR  */
-    DO = 277,                      /* DO  */
-    BREAK = 278,                   /* BREAK  */
-    ENDIF = 279,                   /* ENDIF  */
-    CASE = 280,                    /* CASE  */
-    DEFAULT = 281,                 /* DEFAULT  */
-    SWITCH = 282,                  /* SWITCH  */
-    GOTO = 283,                    /* GOTO  */
-    CONTINUE = 284,                /* CONTINUE  */
-    identifier = 285,              /* identifier  */
-    array_identifier = 286,        /* array_identifier  */
-    func_identifier = 287,         /* func_identifier  */
-    integer_constant = 288,        /* integer_constant  */
-    string_constant = 289,         /* string_constant  */
-    float_constant = 290,          /* float_constant  */
-    character_constant = 291,      /* character_constant  */
-    SIZEOF = 292,                  /* SIZEOF  */
-    CONST = 293,                   /* CONST  */
-    ELSE = 294,                    /* ELSE  */
-    LEFT_ASSIGN = 295,             /* LEFT_ASSIGN  */
-    RIGHT_ASSIGN = 296,            /* RIGHT_ASSIGN  */
-    XOR_ASSIGN = 297,              /* XOR_ASSIGN  */
-    OR_ASSIGN = 298,               /* OR_ASSIGN  */
-    AND_ASSIGN = 299,              /* AND_ASSIGN  */
-    MOD_ASSIGN = 300,              /* MOD_ASSIGN  */
-    MUL_ASSIGN = 301,              /* MUL_ASSIGN  */
-    DIV_ASSIGN = 302,              /* DIV_ASSIGN  */
-    PLUS_ASSIGN = 303,             /* PLUS_ASSIGN  */
-    MINUS_ASSIGN = 304,            /* MINUS_ASSIGN  */
-    assignment_operator = 305,     /* assignment_operator  */
-    OR = 306,                      /* OR  */
-    AND = 307,                     /* AND  */
-    PIPE = 308,                    /* PIPE  */
-    TYPEDEF = 309,                 /* TYPEDEF  */
-    EXTERN = 310,                  /* EXTERN  */
-    STATIC = 311,                  /* STATIC  */
-    AUTO = 312,                    /* AUTO  */
-    REGISTER = 313,                /* REGISTER  */
-    EQ = 314,                      /* EQ  */
-    NOT_EQ = 315,                  /* NOT_EQ  */
-    LESS_THAN_EQ = 316,            /* LESS_THAN_EQ  */
+    CONST = 270,                   /* CONST  */
+    ENUM = 271,                    /* ENUM  */
+    ELLIPSIS = 272,                /* ELLIPSIS  */
+    RETURN = 273,                  /* RETURN  */
+    MAIN = 274,                    /* MAIN  */
+    VOID = 275,                    /* VOID  */
+    WHILE = 276,                   /* WHILE  */
+    FOR = 277,                     /* FOR  */
+    DO = 278,                      /* DO  */
+    BREAK = 279,                   /* BREAK  */
+    ENDIF = 280,                   /* ENDIF  */
+    IDENTIFIER = 281,              /* IDENTIFIER  */
+    array_identifier = 282,        /* array_identifier  */
+    func_identifier = 283,         /* func_identifier  */
+    integer_constant = 284,        /* integer_constant  */
+    string_constant = 285,         /* string_constant  */
+    float_constant = 286,          /* float_constant  */
+    character_constant = 287,      /* character_constant  */
+    CASE = 288,                    /* CASE  */
+    DEFAULT = 289,                 /* DEFAULT  */
+    SWITCH = 290,                  /* SWITCH  */
+    GOTO = 291,                    /* GOTO  */
+    CONTINUE = 292,                /* CONTINUE  */
+    ELSE = 293,                    /* ELSE  */
+    XOR_ASSIGN = 294,              /* XOR_ASSIGN  */
+    OR_ASSIGN = 295,               /* OR_ASSIGN  */
+    AND_ASSIGN = 296,              /* AND_ASSIGN  */
+    MOD_ASSIGN = 297,              /* MOD_ASSIGN  */
+    MUL_ASSIGN = 298,              /* MUL_ASSIGN  */
+    DIV_ASSIGN = 299,              /* DIV_ASSIGN  */
+    PLUS_ASSIGN = 300,             /* PLUS_ASSIGN  */
+    MINUS_ASSIGN = 301,            /* MINUS_ASSIGN  */
+    assignment_operator = 302,     /* assignment_operator  */
+    OR = 303,                      /* OR  */
+    AND = 304,                     /* AND  */
+    PIPE = 305,                    /* PIPE  */
+    TYPEDEF = 306,                 /* TYPEDEF  */
+    EXTERN = 307,                  /* EXTERN  */
+    STATIC = 308,                  /* STATIC  */
+    AUTO = 309,                    /* AUTO  */
+    REGISTER = 310,                /* REGISTER  */
+    XOR = 311,                     /* XOR  */
+    AMP = 312,                     /* AMP  */
+    EQ = 313,                      /* EQ  */
+    NOT_EQ = 314,                  /* NOT_EQ  */
+    LESS_THAN_EQ = 315,            /* LESS_THAN_EQ  */
+    LESS_THAN = 316,               /* LESS_THAN  */
     GR_THAN_EQ = 317,              /* GR_THAN_EQ  */
-    LEFT_OP = 318,                 /* LEFT_OP  */
-    RIGHT_OP = 319,                /* RIGHT_OP  */
-    INCREMENT = 320,               /* INCREMENT  */
-    DECREMENT = 321                /* DECREMENT  */
+    GR_THAN = 318,                 /* GR_THAN  */
+    LEFT_OP = 319,                 /* LEFT_OP  */
+    RIGHT_OP = 320,                /* RIGHT_OP  */
+    LEFT_ASSIGN = 321,             /* LEFT_ASSIGN  */
+    RIGHT_ASSIGN = 322,            /* RIGHT_ASSIGN  */
+    LSHIFT = 323,                  /* LSHIFT  */
+    RSHIFT = 324,                  /* RSHIFT  */
+    PLUS = 325,                    /* PLUS  */
+    MINUS = 326,                   /* MINUS  */
+    MUL = 327,                     /* MUL  */
+    DIV = 328,                     /* DIV  */
+    MOD = 329,                     /* MOD  */
+    SIZEOF = 330,                  /* SIZEOF  */
+    TAB = 331,                     /* TAB  */
+    EXC = 332,                     /* EXC  */
+    INCREMENT = 333,               /* INCREMENT  */
+    DECREMENT = 334                /* DECREMENT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -138,58 +151,71 @@ extern int yydebug;
 #define STRUCT 267
 #define UNION 268
 #define VOLATILE 269
-#define ENUM 270
-#define ELLIPSIS 271
-#define RETURN 272
-#define MAIN 273
-#define VOID 274
-#define WHILE 275
-#define FOR 276
-#define DO 277
-#define BREAK 278
-#define ENDIF 279
-#define CASE 280
-#define DEFAULT 281
-#define SWITCH 282
-#define GOTO 283
-#define CONTINUE 284
-#define identifier 285
-#define array_identifier 286
-#define func_identifier 287
-#define integer_constant 288
-#define string_constant 289
-#define float_constant 290
-#define character_constant 291
-#define SIZEOF 292
-#define CONST 293
-#define ELSE 294
-#define LEFT_ASSIGN 295
-#define RIGHT_ASSIGN 296
-#define XOR_ASSIGN 297
-#define OR_ASSIGN 298
-#define AND_ASSIGN 299
-#define MOD_ASSIGN 300
-#define MUL_ASSIGN 301
-#define DIV_ASSIGN 302
-#define PLUS_ASSIGN 303
-#define MINUS_ASSIGN 304
-#define assignment_operator 305
-#define OR 306
-#define AND 307
-#define PIPE 308
-#define TYPEDEF 309
-#define EXTERN 310
-#define STATIC 311
-#define AUTO 312
-#define REGISTER 313
-#define EQ 314
-#define NOT_EQ 315
-#define LESS_THAN_EQ 316
+#define CONST 270
+#define ENUM 271
+#define ELLIPSIS 272
+#define RETURN 273
+#define MAIN 274
+#define VOID 275
+#define WHILE 276
+#define FOR 277
+#define DO 278
+#define BREAK 279
+#define ENDIF 280
+#define IDENTIFIER 281
+#define array_identifier 282
+#define func_identifier 283
+#define integer_constant 284
+#define string_constant 285
+#define float_constant 286
+#define character_constant 287
+#define CASE 288
+#define DEFAULT 289
+#define SWITCH 290
+#define GOTO 291
+#define CONTINUE 292
+#define ELSE 293
+#define XOR_ASSIGN 294
+#define OR_ASSIGN 295
+#define AND_ASSIGN 296
+#define MOD_ASSIGN 297
+#define MUL_ASSIGN 298
+#define DIV_ASSIGN 299
+#define PLUS_ASSIGN 300
+#define MINUS_ASSIGN 301
+#define assignment_operator 302
+#define OR 303
+#define AND 304
+#define PIPE 305
+#define TYPEDEF 306
+#define EXTERN 307
+#define STATIC 308
+#define AUTO 309
+#define REGISTER 310
+#define XOR 311
+#define AMP 312
+#define EQ 313
+#define NOT_EQ 314
+#define LESS_THAN_EQ 315
+#define LESS_THAN 316
 #define GR_THAN_EQ 317
-#define LEFT_OP 318
-#define RIGHT_OP 319
-#define INCREMENT 320
-#define DECREMENT 321
+#define GR_THAN 318
+#define LEFT_OP 319
+#define RIGHT_OP 320
+#define LEFT_ASSIGN 321
+#define RIGHT_ASSIGN 322
+#define LSHIFT 323
+#define RSHIFT 324
+#define PLUS 325
+#define MINUS 326
+#define MUL 327
+#define DIV 328
+#define MOD 329
+#define SIZEOF 330
+#define TAB 331
+#define EXC 332
+#define INCREMENT 333
+#define DECREMENT 334
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

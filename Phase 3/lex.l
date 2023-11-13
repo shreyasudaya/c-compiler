@@ -2,7 +2,7 @@
 	#include <stdio.h>
 	#include <string.h>
 	#include "y.tab.h"
-
+	int yylineno;
 	#define ANSI_COLOR_RED		"\x1b[31m"
 	#define ANSI_COLOR_GREEN	"\x1b[32m"
 	#define ANSI_COLOR_YELLOW	"\x1b[33m"
@@ -456,92 +456,75 @@ IN "include"
 [ \n\t] ;
 ";"				{ return(';'); }
 ","				{ return(','); }
-("{"|"<%")		{return('{'); }
-("}"|"%>")		{return('}'); }
+("{")			{ return('{'); }
+("}")			{ return('}'); }
 "("				{ return('('); }
 ")"				{ return(')'); }
 ("["|"<:")		{ return('['); }
 ("]"|":>") 		{ return(']'); }
 ":"				{ return(':'); }
 "."				{ return('.'); }
-"&"			    {return('&'); }
-"!"			    {return('!'); }
-"~"			    {return('~'); }
-"-"			    {return('-'); }
-"+"			    {return('+'); }
-"*"			    {return('*'); }
-"/"			    {return('/'); }
-"%"			    {return('%'); }
-"<"			    {return('<'); }
-">"			    {return('>'); }
-"^"			    {return('^'); }
-"|"			    {return('|'); }
-"?"			    {return('?'); }
 
-"char"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(CHAR);}
-"double"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(DOUBLE);}
-"else"			{ insertSTline(yytext, yylineno); insertST(yytext, "Keyword"); return(ELSE);}
-"float"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");return(FLOAT);}
-"while"			{ insertST(yytext, "Keyword"); return(WHILE);}
-"do"			{ insertST(yytext, "Keyword"); return(DO);}
-"for"			{ insertST(yytext, "Keyword"); return(FOR);}
-"if"			{ insertST(yytext, "Keyword"); return(IF);}
-"int"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");return(INT);}
-"long"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(LONG);}
-"return"		{ insertST(yytext, "Keyword");  return(RETURN);}
-"short"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(SHORT);}
-"signed"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(SIGNED);}
-"sizeof" 		{ insertST(yytext, "Keyword");  return(SIZEOF);}
-"struct"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(STRUCT);}
-"union"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(UNION); }
-"unsigned"		{ insertST(yytext, "Keyword");  return(UNSIGNED);}
-"void"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(VOID);}
-"break"			{ insertST(yytext, "Keyword");  return(BREAK);}
-"switch"        {insertST(yytext,"Keyword"); return(SWITCH);}
-"main"          {insertST(yytext,"Keyword"); return(MAIN);}
-"case"          {insertST(yytext,"Keyword"); return(CASE);}
-"const"         {strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(CONST);}
-"continue"		{ insertST(yytext, "Keyword"); return(CONTINUE); }
-"default"		{ insertST(yytext, "Keyword"); return(DEFAULT); }
-"auto"		    {  strcpy(curtype,yytext);insertST(yytext, "Keyword"); return(AUTO); }
-"enum"          { strcpy(curtype,yytext); insertST(yytext, "Keyword");  return(ENUM);}
-"extern"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(EXTERN); }
-"goto"			{  insertST(yytext, "Keyword"); return(GOTO); }
-"register"		{ insertST(yytext, "Keyword"); return(REGISTER); }
-"static"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(STATIC); }
-"typedef"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(TYPEDEF); }
-"volatile"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return(VOLATILE); }
+"char"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return CHAR;}
+"double"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword"); return DOUBLE;}
+"else"			{ insertSTline(yytext, yylineno); insertST(yytext, "Keyword"); return ELSE;}
+"float"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");return FLOAT;}
+"while"			{ insertST(yytext, "Keyword"); return WHILE;}
+"do"			{ insertST(yytext, "Keyword"); return DO;}
+"for"			{ insertST(yytext, "Keyword"); return FOR;}
+"if"			{ insertST(yytext, "Keyword"); return IF;}
+"int"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");return INT;}
+"long"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return LONG;}
+"return"		{ insertST(yytext, "Keyword");  return RETURN;}
+"short"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return SHORT;}
+"signed"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return SIGNED;}
+"sizeof" 		{ insertST(yytext, "Keyword");  return SIZEOF;}
+"struct"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return STRUCT;}
+"unsigned"		{ insertST(yytext, "Keyword");  return UNSIGNED;}
+"void"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return VOID;}
+"break"			{ insertST(yytext, "Keyword");  return BREAK;}
 
-
-"..."			{ return(ELLIPSIS); }
-">>="			{return(RIGHT_ASSIGN); }
-"<<="			{return(LEFT_ASSIGN); }
-">>"			{return(RIGHT_OP); }
-"<<"			{return(LEFT_OP); }
-"++"			{ return(INCREMENT); }
-"--"			{ return(DECREMENT); }
-"<="			{ return(LESS_THAN_EQ); }
-">="			{ return(GR_THAN_EQ); }
-"=="			{ return(EQ); }
-"!="			{ return(NOT_EQ); }
-"&&"			{ return(AND); }
-"||"			{ return(OR); }
-"*="			{ return(MUL_ASSIGN); }
-"/="			{ return(DIV_ASSIGN); }
-"%="			{ return(MOD_ASSIGN); }
-"+="			{ return(PLUS_ASSIGN); }
-"-="			{ return(MINUS_ASSIGN); }
-"&="			{ return(AND_ASSIGN); }
-"^="			{ return(XOR_ASSIGN); }
-"|="			{ return(OR_ASSIGN); }
+"..."			{ return ELLIPSIS; }
+">>="			{return RIGHT_ASSIGN; }
+"<<="			{return LEFT_ASSIGN; }
+">>"			{return RIGHT_OP; }
+"<<"			{return LEFT_OP; }
+"++"			{ return INCREMENT; }
+"--"			{ return DECREMENT; }
+"<="			{ return LESS_THAN_EQ; }
+"<"				{ return LESS_THAN; }
+">="			{ return GR_THAN_EQ; }
+">"				{ return GR_THAN; }
+"=="			{ return EQ; }
+"!="			{ return NOT_EQ; }
+"&&"			{ return AND; }
+"||"			{ return OR; }
+"^"				{ return XOR; }
+"*="			{ return MUL_ASSIGN; }
+"/="			{ return DIV_ASSIGN; }
+"%="			{ return MOD_ASSIGN; }
+"+="			{ return PLUS_ASSIGN; }
+"-="			{ return MINUS_ASSIGN; }
+"&="			{ return AND_ASSIGN; }
+"^="			{ return XOR_ASSIGN; }
+"|="			{ return OR_ASSIGN; }
+"&"				{ return AMP; }
+"!"				{ return EXC; }
+"~"				{ return TAB; }
+"-"				{ return MINUS; }
+"+"				{ return PLUS; }
+"*"				{ return MUL; }
+"/"				{ return DIV; }
+"%"				{ return MOD; }
+"|"				{ return PIPE; }
 \=				{ return assignment_operator;}
 
 \"[^\n]*\"/[;|,|\)] 			{strcpy(curval,yytext); insertCT(yytext,"String Constant"); return string_constant;}
 \'[A-Z|a-z]\'/[;|,|\)|:] 		{strcpy(curval,yytext); insertCT(yytext,"Character Constant"); return character_constant;}
-[a-z|A-Z]([a-z|A-Z]|[0-9])*/\[ 	{strcpy(curid,yytext); insertST(yytext, "Array Identifier");  return array_identifier;}
-[1-9][0-9]*|0/[;|,|" "|\)|<|>|=|\!|\||&|\+|\-|\*|\/|\%|~|\]|\}|:|\n|\t|\^] 	{strcpy(curval,yytext); insertCT(yytext, "Number Constant"); yylval = atoi(yytext); return integer_constant;}
+[a-z|A-Z]([a-z|A-Z]|[0-9])*/\[ 	{strcpy(curid,yytext); insertST(yytext, "Array Identifier");  return IDENTIFIER;}
+[1-9][0-9]*|0/[;|,|" "|\)|<|>|=|\!|\||&|\+|\-|\*|\/|\%|~|\]|\}|:|\n|\t|\^] 	{strcpy(curval,yytext); insertCT(yytext, "Number Constant"); return integer_constant;}
 ([0-9]*)\.([0-9]+)/[;|,|" "|\)|<|>|=|\!|\||&|\+|\-|\*|\/|\%|~|\n|\t|\^] 	{strcpy(curval,yytext); insertCT(yytext, "Floating Constant"); return float_constant;}
-[A-Za-z_][A-Za-z_0-9]* {strcpy(curid,yytext); insertST(curid,"Identifier"); return identifier;}
+[A-Za-z_][A-Za-z_0-9]* {strcpy(curid,yytext);insertST(yytext,"Identifier");  return IDENTIFIER;}
 
 (.?) {
 		if(yytext[0]=='#')

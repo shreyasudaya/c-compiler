@@ -8,10 +8,12 @@
 	void ins();
 	void insV();
 	int flag=0;
+
 	#define ANSI_COLOR_RED		"\x1b[31m"
 	#define ANSI_COLOR_GREEN	"\x1b[32m"
 	#define ANSI_COLOR_CYAN		"\x1b[36m"
 	#define ANSI_COLOR_RESET	"\x1b[0m"
+
 	extern char curid[20];
 	extern char curtype[20];
 	extern char curval[20];
@@ -36,10 +38,11 @@
 	char getfirst(char*);
 	extern int params_count;
 	int call_params_count;
+
 %}
 
 %nonassoc IF
-%token INT CHAR FLOAT DOUBLE LONG SHORT SIGNED UNSIGNED STRUCT UNION VOLATILE
+%token INT CHAR FLOAT DOUBLE LONG SHORT SIGNED UNSIGNED STRUCT UNION VOLATILE CONST
 %token ENUM ELLIPSIS
 %token RETURN MAIN
 %token VOID
@@ -47,13 +50,12 @@
 %token BREAK
 %token ENDIF
 %expect 1
-%token CASE DEFAULT SWITCH GOTO CONTINUE
-%token identifier array_identifier func_identifier
-%token integer_constant string_constant float_constant character_constant SIZEOF CONST
 
+%token IDENTIFIER array_identifier func_identifier
+%token integer_constant string_constant float_constant character_constant
+%token CASE DEFAULT SWITCH GOTO CONTINUE
 %nonassoc ELSE
 
-%right LEFT_ASSIGN RIGHT_ASSIGN
 %right XOR_ASSIGN OR_ASSIGN
 %right AND_ASSIGN MOD_ASSIGN
 %right MUL_ASSIGN DIV_ASSIGN
@@ -64,14 +66,18 @@
 %left AND
 %left PIPE
 %token TYPEDEF EXTERN STATIC AUTO REGISTER
+%left XOR
+%left AMP
 %left EQ NOT_EQ
-%left LESS_THAN_EQ '<' GR_THAN_EQ '>'
+%left LESS_THAN_EQ LESS_THAN GR_THAN_EQ GR_THAN
 %left LEFT_OP RIGHT_OP 
-%left '+' '-'
-%left '*' '/' '%'
+%left LEFT_ASSIGN RIGHT_ASSIGN
+%left LSHIFT RSHIFT
+%left PLUS MINUS
+%left MUL DIV MOD
 
 %right SIZEOF
-%right '~' '!'
+%right TAB EXC
 %left INCREMENT DECREMENT
 
 
@@ -99,7 +105,7 @@ variable_declaration_list
 			: variable_declaration_list ',' variable_declaration_identifier | variable_declaration_identifier;
 
 variable_declaration_identifier 
-			: identifier {if(duplicate(curid)){printf("Duplicate\n");exit(0);}insertSTnest(curid,currnest); ins();  } vdi   
+			: IDENTIFIER {if(duplicate(curid)){printf("Duplicate\n");exit(0);}insertSTnest(curid,currnest); ins();  } vdi   
 			  | array_identifier {if(duplicate(curid)){printf("Duplicate\n");exit(0);}insertSTnest(curid,currnest); ins();  } vdi;
 			
 			
@@ -111,8 +117,11 @@ identifier_array_type
 			| ;
 
 initilization_params
-			: integer_constant ']' initilization {if($$ < 1) {printf("Wrong array size\n"); exit(0);} }
+			: integer_constant ']' initilization 
+			| integer_constant ']' '[' initilization_params 
 			| ']' string_initilization;
+
+
 
 initilization
 			: string_initilization
@@ -143,7 +152,7 @@ function_declaration
 			: function_declaration_type function_declaration_param_statement;
 
 function_declaration_type
-			: type_specifier identifier '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
+			: type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
 
 function_declaration_param_statement
 			: params ')' statement;
@@ -162,7 +171,7 @@ parameters_identifier_list_breakup
 			| ;
 
 param_identifier 
-			: identifier { ins();insertSTnest(curid,1); params_count++; } param_identifier_breakup;
+			: IDENTIFIER { ins();insertSTnest(curid,1); params_count++; } param_identifier_breakup;
 
 param_identifier_breakup
 			: '[' ']'
@@ -266,7 +275,7 @@ expression
 			                                                          {$$=-1; printf("Type mismatch\n"); exit(0);} 
 			                                                       }
 			| mutable INCREMENT 							{if($1 == 1) $$=1; else $$=-1;}
-			| mutable DECREMENT							{if($1 == 1) $$=1; else $$=-1;}
+			| mutable DECREMENT 							{if($1 == 1) $$=1; else $$=-1;}
 			| simple_expression {if($1 == 1) $$=1; else $$=-1;} ;
 
 
@@ -288,30 +297,30 @@ regular_expression
 			  | sum_expression {if($1 == 1) $$=1; else $$=-1;} ;
 			
 relational_operators 
-			: GR_THAN_EQ | LESS_THAN_EQ | '>' 
-			| '<' | EQ | NOT_EQ ;
+			: GR_THAN_EQ | LESS_THAN_EQ | GR_THAN 
+			| LESS_THAN | EQ | NOT_EQ ;
 
 sum_expression 
 			: sum_expression sum_operators term  {if($1 == 1 && $3==1) $$=1; else $$=-1;}
 			| term {if($1 == 1) $$=1; else $$=-1;};
 
 sum_operators 
-			: '+' 
-			| '-' ;
+			: PLUS
+			| MINUS ;
 
 term
 			: term MULOP factor {if($1 == 1 && $3==1) $$=1; else $$=-1;}
 			| factor {if($1 == 1) $$=1; else $$=-1;} ;
 
 MULOP 
-			: '*' | '/' | '%' ;
+			:MUL|DIV|MOD;
 
 factor 
 			: immutable {if($1 == 1) $$=1; else $$=-1;} 
 			| mutable {if($1 == 1) $$=1; else $$=-1;} ;
 
 mutable 
-			: identifier {
+			: IDENTIFIER {
 						  if(check_id_is_func(curid))
 						  {printf("Function name used as Identifier\n"); exit(8);}
 			              if(!checkscope(curid))
@@ -336,7 +345,7 @@ immutable
 			| constant {if($1==1) $$=1; else $$=-1;};
 
 call
-			: identifier '('{
+			: IDENTIFIER '('{
 			             if(!check_declaration(curid, "Function"))
 			             { printf("Function not declared"); exit(0);} 
 			             insertSTF(curid); 
@@ -369,6 +378,7 @@ constant
 			| float_constant	{  insV(); } 
 			| character_constant{  insV();$$=1; };
 
+
 %%
 
 extern FILE *yyin;
@@ -400,10 +410,9 @@ int main(int argc , char **argv)
 
 void yyerror(char *s)
 {
-	printf(ANSI_COLOR_RED "%d %s %s\n", yylineno, s, yytext);
+	printf("%d %s %s\n", yylineno, s, yytext);
 	flag=1;
 	printf(ANSI_COLOR_RED "Status: Parsing Failed - Invalid\n" ANSI_COLOR_RESET);
-	exit(7);
 }
 
 void ins()
