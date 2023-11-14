@@ -494,6 +494,10 @@ IN "include"
 "extern"	{ insertST(yytext, "Keyword");  return EXTERN;}
 "const"		{ insertST(yytext, "Keyword");  return CONST;}
 "auto"		{ insertST(yytext, "Keyword");  return AUTO;}	
+"static"	{ insertST(yytext, "Keyword");  return STATIC;}	
+"global"	{ insertST(yytext, "Keyword");  return GLOBAL;}	
+
+
 
 "..."			{ return ELLIPSIS; }
 ">>="			{return RIGHT_ASSIGN; }

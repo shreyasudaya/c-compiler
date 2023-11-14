@@ -106,30 +106,31 @@ extern int yydebug;
     EXTERN = 307,                  /* EXTERN  */
     STATIC = 308,                  /* STATIC  */
     AUTO = 309,                    /* AUTO  */
-    XOR = 310,                     /* XOR  */
-    AMP = 311,                     /* AMP  */
-    EQ = 312,                      /* EQ  */
-    NOT_EQ = 313,                  /* NOT_EQ  */
-    LESS_THAN_EQ = 314,            /* LESS_THAN_EQ  */
-    LESS_THAN = 315,               /* LESS_THAN  */
-    GR_THAN_EQ = 316,              /* GR_THAN_EQ  */
-    GR_THAN = 317,                 /* GR_THAN  */
-    LEFT_OP = 318,                 /* LEFT_OP  */
-    RIGHT_OP = 319,                /* RIGHT_OP  */
-    LEFT_ASSIGN = 320,             /* LEFT_ASSIGN  */
-    RIGHT_ASSIGN = 321,            /* RIGHT_ASSIGN  */
-    LSHIFT = 322,                  /* LSHIFT  */
-    RSHIFT = 323,                  /* RSHIFT  */
-    PLUS = 324,                    /* PLUS  */
-    MINUS = 325,                   /* MINUS  */
-    MUL = 326,                     /* MUL  */
-    DIV = 327,                     /* DIV  */
-    MOD = 328,                     /* MOD  */
-    SIZEOF = 329,                  /* SIZEOF  */
-    TAB = 330,                     /* TAB  */
-    EXC = 331,                     /* EXC  */
-    INCREMENT = 332,               /* INCREMENT  */
-    DECREMENT = 333                /* DECREMENT  */
+    GLOBAL = 310,                  /* GLOBAL  */
+    XOR = 311,                     /* XOR  */
+    AMP = 312,                     /* AMP  */
+    EQ = 313,                      /* EQ  */
+    NOT_EQ = 314,                  /* NOT_EQ  */
+    LESS_THAN_EQ = 315,            /* LESS_THAN_EQ  */
+    LESS_THAN = 316,               /* LESS_THAN  */
+    GR_THAN_EQ = 317,              /* GR_THAN_EQ  */
+    GR_THAN = 318,                 /* GR_THAN  */
+    LEFT_OP = 319,                 /* LEFT_OP  */
+    RIGHT_OP = 320,                /* RIGHT_OP  */
+    LEFT_ASSIGN = 321,             /* LEFT_ASSIGN  */
+    RIGHT_ASSIGN = 322,            /* RIGHT_ASSIGN  */
+    LSHIFT = 323,                  /* LSHIFT  */
+    RSHIFT = 324,                  /* RSHIFT  */
+    PLUS = 325,                    /* PLUS  */
+    MINUS = 326,                   /* MINUS  */
+    MUL = 327,                     /* MUL  */
+    DIV = 328,                     /* DIV  */
+    MOD = 329,                     /* MOD  */
+    SIZEOF = 330,                  /* SIZEOF  */
+    TAB = 331,                     /* TAB  */
+    EXC = 332,                     /* EXC  */
+    INCREMENT = 333,               /* INCREMENT  */
+    DECREMENT = 334                /* DECREMENT  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -190,30 +191,31 @@ extern int yydebug;
 #define EXTERN 307
 #define STATIC 308
 #define AUTO 309
-#define XOR 310
-#define AMP 311
-#define EQ 312
-#define NOT_EQ 313
-#define LESS_THAN_EQ 314
-#define LESS_THAN 315
-#define GR_THAN_EQ 316
-#define GR_THAN 317
-#define LEFT_OP 318
-#define RIGHT_OP 319
-#define LEFT_ASSIGN 320
-#define RIGHT_ASSIGN 321
-#define LSHIFT 322
-#define RSHIFT 323
-#define PLUS 324
-#define MINUS 325
-#define MUL 326
-#define DIV 327
-#define MOD 328
-#define SIZEOF 329
-#define TAB 330
-#define EXC 331
-#define INCREMENT 332
-#define DECREMENT 333
+#define GLOBAL 310
+#define XOR 311
+#define AMP 312
+#define EQ 313
+#define NOT_EQ 314
+#define LESS_THAN_EQ 315
+#define LESS_THAN 316
+#define GR_THAN_EQ 317
+#define GR_THAN 318
+#define LEFT_OP 319
+#define RIGHT_OP 320
+#define LEFT_ASSIGN 321
+#define RIGHT_ASSIGN 322
+#define LSHIFT 323
+#define RSHIFT 324
+#define PLUS 325
+#define MINUS 326
+#define MUL 327
+#define DIV 328
+#define MOD 329
+#define SIZEOF 330
+#define TAB 331
+#define EXC 332
+#define INCREMENT 333
+#define DECREMENT 334
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED

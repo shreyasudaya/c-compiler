@@ -66,7 +66,7 @@
 %left OR
 %left AND
 %left PIPE
-%token TYPEDEF EXTERN STATIC AUTO 
+%token TYPEDEF EXTERN STATIC AUTO GLOBAL
 %left XOR
 %left AMP
 %left EQ NOT_EQ
@@ -98,11 +98,14 @@ D
 declaration
 			: variable_declaration 
 			| function_declaration
-			| structure_definition;
+			| structure_definition
+			| TYPEDEF structure_definition;
+
 
 variable_declaration
 			: type_specifier variable_declaration_list ';' 
-			| structure_declaration;
+			| structure_declaration
+			| TYPEDEF structure_declaration;;
 structure_definition
 			: STRUCT IDENTIFIER { ins(); } '{' V1  '}' ';';
 			| UNION IDENTIFIER { ins(); } '{' V1  '}' ';';
@@ -164,7 +167,8 @@ function_declaration
 			: function_declaration_type function_declaration_param_statement;
 
 function_declaration_type
-			: type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
+			: type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); }
+			| CONST type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
 
 function_declaration_param_statement
 			: params ')' statement;
@@ -173,7 +177,8 @@ params
 			: parameters_list | ;
 
 parameters_list 
-			: type_specifier { check_params(curtype); } parameters_identifier_list { insertSTparamscount(currfunc, params_count); };
+			: type_specifier { check_params(curtype); } parameters_identifier_list { insertSTparamscount(currfunc, params_count); }
+			|CONST type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };;
 
 parameters_identifier_list 
 			: param_identifier parameters_identifier_list_breakup;
@@ -212,6 +217,12 @@ conditional_statements
 conditional_statements_breakup
 			: ELSE statement
 			| ;
+/*pointer
+	: '*'
+	| '*' type_specifier
+	| '*' pointer
+	| '*' type_specifier pointer
+	;*/
 
 iterative_statements 
 			: WHILE '(' simple_expression ')' {if($3!=1){printf("Not of type\n");exit(0);}} statement 
