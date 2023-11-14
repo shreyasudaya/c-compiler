@@ -42,14 +42,15 @@
 %}
 
 %nonassoc IF
-%token INT CHAR FLOAT DOUBLE LONG SHORT SIGNED UNSIGNED STRUCT UNION VOLATILE CONST
+%token INT CHAR FLOAT DOUBLE LONG SHORT SIGNED UNSIGNED VOLATILE CONST 
+%token STRUCT UNION
 %token ENUM ELLIPSIS
 %token RETURN MAIN
 %token VOID
 %token WHILE FOR DO 
 %token BREAK
 %token ENDIF
-%expect 1
+%expect 2
 
 %token IDENTIFIER array_identifier func_identifier
 %token integer_constant string_constant float_constant character_constant
@@ -65,7 +66,7 @@
 %left OR
 %left AND
 %left PIPE
-%token TYPEDEF EXTERN STATIC AUTO REGISTER
+%token TYPEDEF EXTERN STATIC AUTO 
 %left XOR
 %left AMP
 %left EQ NOT_EQ
@@ -97,9 +98,20 @@ D
 declaration
 			: variable_declaration 
 			| function_declaration
+			| structure_definition;
 
 variable_declaration
 			: type_specifier variable_declaration_list ';' 
+			| structure_declaration;
+structure_definition
+			: STRUCT IDENTIFIER { ins(); } '{' V1  '}' ';';
+			| UNION IDENTIFIER { ins(); } '{' V1  '}' ';';
+
+V1 : variable_declaration V1 | ;
+
+structure_declaration 
+			: STRUCT IDENTIFIER variable_declaration_list;
+			|UNION IDENTIFIER variable_declaration_list;
 
 variable_declaration_list
 			: variable_declaration_list ',' variable_declaration_identifier | variable_declaration_identifier;
@@ -195,16 +207,17 @@ expression_statment
 			| ';' ;
 
 conditional_statements 
-			: IF '(' simple_expression ')' {if($3!=1){printf("Condition checking is not of type int\n");exit(0);}} statement conditional_statements_breakup;
+			: IF '(' simple_expression ')' {if($3!=1){printf("Not of type\n");exit(0);}} statement conditional_statements_breakup;
 
 conditional_statements_breakup
 			: ELSE statement
 			| ;
 
 iterative_statements 
-			: WHILE '(' simple_expression ')' {if($3!=1){printf("Condition checking is not of type int\n");exit(0);}} statement 
-			| FOR '(' expression ';' simple_expression ';' {if($5!=1){printf("Condition checking is not of type int\n");exit(0);}} expression ')' 
-			| DO statement WHILE '(' simple_expression ')'{if($5!=1){printf("Condition checking is not of type int\n");exit(0);}} ';';
+			: WHILE '(' simple_expression ')' {if($3!=1){printf("Not of type\n");exit(0);}} statement 
+			| FOR '(' expression ';' simple_expression ';' {if($5!=1){printf("Not of type\n");exit(0);}} expression ')' 
+			| DO statement WHILE '(' simple_expression ')'{if($5!=1){printf("Not of type\n");exit(0);}} ';';
+			| ST;
 return_statement 
 			: RETURN ';' {if(strcmp(currfunctype,"void")) {printf("Returning void of a non-void function\n"); exit(0);}}
 			| RETURN expression ';' { 	if(!strcmp(currfunctype, "void"))
@@ -288,6 +301,7 @@ and_expression
 			  |unary_relation_expression {if($1 == 1) $$=1; else $$=-1;} ;
 
 
+
 unary_relation_expression 
 			: '!' unary_relation_expression {if($2==1) $$=1; else $$=-1;} 
 			| regular_expression {if($1 == 1) $$=1; else $$=-1;} ;
@@ -299,7 +313,15 @@ regular_expression
 relational_operators 
 			: GR_THAN_EQ | LESS_THAN_EQ | GR_THAN 
 			| LESS_THAN | EQ | NOT_EQ ;
+ST     :SWITCH '('IDENTIFIER')' '{' B '}';
+   
+B       :C D;
+   
+C      :CASE integer_constant ':' expression ';' BREAK ';' C
+        |;
 
+D      : DEFAULT':' expression ';' BREAK ';'
+       ;
 sum_expression 
 			: sum_expression sum_operators term  {if($1 == 1 && $3==1) $$=1; else $$=-1;}
 			| term {if($1 == 1) $$=1; else $$=-1;};

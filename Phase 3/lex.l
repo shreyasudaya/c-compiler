@@ -480,9 +480,20 @@ IN "include"
 "signed"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return SIGNED;}
 "sizeof" 		{ insertST(yytext, "Keyword");  return SIZEOF;}
 "struct"		{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return STRUCT;}
+"union"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return UNION;}
 "unsigned"		{ insertST(yytext, "Keyword");  return UNSIGNED;}
 "void"			{ strcpy(curtype,yytext); insertST(yytext, "Keyword");  return VOID;}
 "break"			{ insertST(yytext, "Keyword");  return BREAK;}
+"switch"		{ insertST(yytext, "Keyword");  return SWITCH;}
+"case"			{ insertST(yytext, "Keyword");  return CASE;}
+"default"			{ insertST(yytext, "Keyword");  return DEFAULT;}
+"goto"			{ insertST(yytext, "Keyword");  return GOTO;}
+"continue"		{ insertST(yytext, "Keyword");  return CONTINUE;}
+"typedef"		{ insertST(yytext, "Keyword");  return TYPEDEF;}	
+"enum"			{ insertST(yytext, "Keyword");  return ENUM;}
+"extern"	{ insertST(yytext, "Keyword");  return EXTERN;}
+"const"		{ insertST(yytext, "Keyword");  return CONST;}
+"auto"		{ insertST(yytext, "Keyword");  return AUTO;}	
 
 "..."			{ return ELLIPSIS; }
 ">>="			{return RIGHT_ASSIGN; }
