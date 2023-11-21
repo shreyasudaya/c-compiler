@@ -96,7 +96,7 @@ D
 			| ;
 
 declaration
-			: variable_declaration 
+			: variable_declaration
 			| function_declaration
 			| structure_definition
 			| TYPEDEF structure_definition;
@@ -146,10 +146,16 @@ initilization
 type_specifier 
 			: INT | CHAR | FLOAT  | DOUBLE  
 			| LONG long_grammar 
+			| CONST
+			| GLOBAL
+			| STATIC
 			| SHORT short_grammar
 			| UNSIGNED unsigned_grammar 
 			| SIGNED signed_grammar
-			| VOID  ;
+			| VOID  
+			| STATIC INT
+			| GLOBAL INT;
+			
 
 unsigned_grammar 
 			: INT | LONG long_grammar | SHORT short_grammar | ;
@@ -167,8 +173,7 @@ function_declaration
 			: function_declaration_type function_declaration_param_statement;
 
 function_declaration_type
-			: type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); }
-			| CONST type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
+			: type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };
 
 function_declaration_param_statement
 			: params ')' statement;
@@ -177,8 +182,7 @@ params
 			: parameters_list | ;
 
 parameters_list 
-			: type_specifier { check_params(curtype); } parameters_identifier_list { insertSTparamscount(currfunc, params_count); }
-			|CONST type_specifier IDENTIFIER '('  { strcpy(currfunctype, curtype); strcpy(currfunc, curid); check_duplicate(curid); insertSTF(curid); ins(); };;
+			: type_specifier { check_params(curtype); } parameters_identifier_list { insertSTparamscount(currfunc, params_count); };
 
 parameters_identifier_list 
 			: param_identifier parameters_identifier_list_breakup;
@@ -217,12 +221,12 @@ conditional_statements
 conditional_statements_breakup
 			: ELSE statement
 			| ;
-/*pointer
+pointer
 	: '*'
 	| '*' type_specifier
 	| '*' pointer
 	| '*' type_specifier pointer
-	;*/
+	;
 
 iterative_statements 
 			: WHILE '(' simple_expression ')' {if($3!=1){printf("Not of type\n");exit(0);}} statement 
